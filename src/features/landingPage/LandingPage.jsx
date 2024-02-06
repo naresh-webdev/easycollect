@@ -7,10 +7,10 @@ import Section4 from "./Section4";
 function LandingPage() {
   return (
     <div className="">
-      <section className="dvh h-screen">
+      <div className="lg:h-dvh  ">
         <Header />
-        <Section1 />
-      </section>
+        <Section1 className="" />
+      </div>
       <Section2 />
       <Section3 />
       <Section4 />
