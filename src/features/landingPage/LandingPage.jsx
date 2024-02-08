@@ -7,7 +7,7 @@ import Section4 from "./Section4";
 function LandingPage() {
   return (
     <div className="">
-      <div className="lg:h-dvh  ">
+      <div className="relative h-dvh">
         <Header />
         <Section1 className="" />
       </div>

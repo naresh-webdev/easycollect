@@ -1,6 +1,6 @@
 function Title({ children }) {
   return (
-    <h3 className="mb-6 pt-6 text-center text-xl uppercase text-main_neon sm:pt-8 sm:text-2xl  md:mb-8 md:text-3xl md:font-semibold lg:text-4xl xl:mb-16 xl:pt-20">
+    <h3 className="mb-6 pt-20 text-center text-xl uppercase tracking-wide text-main_neon sm:pt-28 sm:text-2xl   md:text-3xl md:font-semibold lg:pt-24 lg:text-4xl">
       {children}
     </h3>
   );
