@@ -8,12 +8,17 @@ function Header() {
         EasyCollect
       </h2>
 
-      <Button className={"hidden sm:inline-block"}>LOGIN / SIGNUP</Button>
+      <Button className={"hidden sm:inline-block"} to={"/signup"}>
+        LOGIN / SIGNUP
+      </Button>
       <div className="flex gap-3 sm:hidden">
         <button className="cursor-pointer text-[18px] text-main_neon">
           Login
         </button>
-        <Button className="cursor-pointer"> Sign Up </Button>
+        <Button className="cursor-pointer" to={"/signup"}>
+          {" "}
+          Sign Up{" "}
+        </Button>
       </div>
     </nav>
   );

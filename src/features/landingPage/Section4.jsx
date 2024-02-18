@@ -10,7 +10,7 @@ function Section4() {
         <Title>Get in Touch</Title>
         <div className="absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 lg:flex lg:items-center lg:justify-center">
           <div
-            className="flex max-w-full 
+            className="flex max-w-full
          flex-col items-start justify-center gap-14 px-4 min-[500px]:px-14 md:flex-row  md:justify-center md:gap-8 md:px-10 lg:my-8 lg:items-center  lg:gap-14 xl:gap-16 xl:px-14 2xl:px-20"
           >
             <p className="basis-1/2  text-main_white md:inline-block md:px-0 md:text-xl lg:p-0 lg:text-2xl xl:self-start">
@@ -78,7 +78,7 @@ export async function SendMailAction({ request }) {
   const data = Object.fromEntries(formData);
   console.log(data);
 
-  return redirect("/");
+  return null;
 }
 
 export default Section4;

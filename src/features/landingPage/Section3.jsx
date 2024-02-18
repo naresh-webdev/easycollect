@@ -5,7 +5,7 @@ function Section3() {
   return (
     <section className="mb-6 sm:mb-10 lg:h-dvh">
       <Title>Watch a quick video</Title>
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center lg:ml-8">
         <div className="relative px-4 sm:mt-8 lg:mt-20">
           <iframe
             className="h-full w-full sm:h-[265px] sm:w-[510px] md:h-[315px] md:w-[560px]"

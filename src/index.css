@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.title__content {
+  /** TEXT GRADIENT */
+  color: #ea047e;
+  background-image: -webkit-linear-gradient(45deg, #ea047e 31%, #141e30 81%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  text-fill-color: transparent;
+  -webkit-text-fill-color: transparent;
+}
