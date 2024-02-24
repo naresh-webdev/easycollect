@@ -5,7 +5,7 @@ function Button({ children, className, to = null, type = "primary" }) {
 
   const types = {
     primary: base,
-    secondary: `cursor-pointer rounded-sm bg-bg_gradient_1 px-2.5 py-1.5 font-semibold text-main_white shadow-sm transition-all duration-300 ease-in hover:bg-main_bg_gradient_1 md:px-3.5 md:py-2 ${className}`,
+    secondary: `cursor-pointer rounded-sm bg-main_neon_dark md:bg-bg_gradient_1 px-2.5 py-1.5 font-semibold text-bg_main_gray md:text-main_white shadow-sm transition-all duration-300 ease-in hover:bg-main_bg_gradient_1 md:px-3.5 md:py-2 ${className} md:text-sm md:font-bold md:shadow-md md:hover:bg-bg_gradient_2 hover:bg-main_neon_dark_shade md:hover:text-main_white_dim`,
   };
   if (to) {
     return (

@@ -6,7 +6,7 @@ function Review({ review }) {
   const stars = [1, 2, 3, 4, 5];
   return (
     <>
-      <div className="flex items-center justify-around">
+      <div className="flex items-center justify-around gap-3 xl:gap-0">
         <img src={img} alt="profile pic" className="h-16 w-16 rounded-full" />
         <div className="flex flex-col">
           <span>{name}</span>
@@ -23,7 +23,7 @@ function Review({ review }) {
           <ImQuotesRight size={"48px"} color="#9ca3af" />
         </span>
       </div>
-      <p className="px-4 py-3 text-sm">{description}</p>
+      <p className="self-start px-3 py-3 text-sm">{description}</p>
     </>
   );
 }

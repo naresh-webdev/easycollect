@@ -55,7 +55,7 @@ function Reviews() {
   // }, [reviewNumber]);
 
   return (
-    <div className="flex w-[50%] flex-col text-main_white_dim ">
+    <div className="flex w-2/3 max-w-72 flex-col text-main_white_dim ">
       <Review review={fakeReviews[reviewNumber]} />
     </div>
   );

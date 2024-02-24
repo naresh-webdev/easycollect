@@ -11,3 +11,9 @@
   text-fill-color: transparent;
   -webkit-text-fill-color: transparent;
 }
+
+@layer components {
+  .form-input {
+    @apply cursor-pointer border-b-2 border-gray-300 bg-transparent text-main_white_dim hover:border-gray-700 hover:outline-none focus:outline-none focus-visible:outline-none md:border-gray-400 md:text-main_gray;
+  }
+}

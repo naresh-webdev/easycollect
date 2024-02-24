@@ -5,7 +5,8 @@ export default {
     extend: {
       colors: {
         main_neon: "#00FFF0",
-        main_neon_light: "#5FCCC5",
+        main_neon_dark: "#00f5d4",
+        main_neon_dark_shade: "#2ED9C2",
         main_pink: "#EA047E",
         main_white: "#f9fafb",
         main_white_dim: "#e5e7eb",
