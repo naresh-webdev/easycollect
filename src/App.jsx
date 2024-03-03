@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Error from "./ui/Error";
 import { SendMailAction } from "./features/landingPage/Section4";
 import Signup, { SigninAction } from "./features/signup/Signup";
+import Login, { LoginAction } from "./features/login/Login";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,12 @@ const router = createBrowserRouter([
     errorElement: <Error />,
     path: "/signup",
     action: SigninAction,
+  },
+  {
+    element: <Login />,
+    errorElement: <Error />,
+    path: "/login",
+    action: LoginAction,
   },
 ]);
 
