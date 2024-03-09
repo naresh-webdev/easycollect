@@ -1,34 +1,39 @@
-import LandingPage from "./features/landingPage/LandingPage";
+import styles from "./constants/styles";
+import {
+  Navbar,
+  Billing,
+  CardDeal,
+  Business,
+  Clients,
+  CTA,
+  Stats,
+  Footer,
+  Testimonials,
+  Hero,
+} from "./components";
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Error from "./ui/Error";
-import { SendMailAction } from "./features/landingPage/Section4";
-import Signup, { SigninAction } from "./features/signup/Signup";
-import Login, { LoginAction } from "./features/login/Login";
+const App = () => {
+  return (
+    <div className="bg-primary w-full overflow-hidden">
+      <div className={`${styles.paddingX} ${styles.flexCenter}`}>
+        <div className={`${styles.boxWidth}`}>
+          <Navbar />
+        </div>
+      </div>
+      <div className={`bg-primary ${styles.flexStart}`}>
+        <div className={`${styles.boxWidth}`}>
+          <Hero />
+        </div>
+      </div>
 
-const router = createBrowserRouter([
-  {
-    element: <LandingPage />,
-    errorElement: <Error />,
-    path: "/",
-    action: SendMailAction,
-  },
-  {
-    element: <Signup />,
-    errorElement: <Error />,
-    path: "/signup",
-    action: SigninAction,
-  },
-  {
-    element: <Login />,
-    errorElement: <Error />,
-    path: "/login",
-    action: LoginAction,
-  },
-]);
-
-function App() {
-  return <RouterProvider router={router} />;
-}
+      <div className={`bg-primary ${styles.paddingX} ${styles.flexStart}`}>
+        <div className={`${styles.boxWidth}`}>
+          <Stats /> <Business /> <Billing /> <CardDeal /> <Testimonials />
+          <Clients /> <CTA /> <Footer />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default App;
