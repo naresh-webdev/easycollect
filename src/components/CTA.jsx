@@ -1,20 +1,23 @@
+import { Link } from "react-router-dom";
 import styles from "../constants/styles";
 import Button from "./Button";
 
 function CTA() {
   return (
     <section
-      className={`${styles.flexCenter} ${styles.marginY} ${styles.padding} sm:flex-row flex-col bg-black-gradient-2 rounded-[20px] box-shadow`}
+      className={`${styles.flexCenter} ${styles.marginY} ${styles.padding} bg-black-gradient-2 box-shadow flex-col rounded-[20px] sm:flex-row`}
     >
-      <div className="flex-1 flex flex-col">
+      <div className="flex flex-1 flex-col">
         <h2 className={styles.heading2}>Let’s try our service now!</h2>
         <p className={`${styles.paragraph} mt-5 max-w-[490px]`}>
           EasyCollect, The smarter choice for seamless finance management.
         </p>
       </div>
 
-      <div className={`${styles.flexCenter} sm:ml-10 ml-0 sm:mt-0 mt-10`}>
-        <Button>Get Started</Button>
+      <div className={`${styles.flexCenter} ml-0 mt-10 sm:ml-10 sm:mt-0`}>
+        <Link to={"/signup"}>
+          <Button styles="mt-10">Get Started</Button>
+        </Link>
       </div>
     </section>
   );

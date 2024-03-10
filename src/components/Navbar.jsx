@@ -1,24 +1,27 @@
 import { useState } from "react";
-import { close, logo, logoMain, logoIcon, menu } from "../assets";
+import { close, logoIcon, menu } from "../assets";
 
 import { navLinks } from "../constants";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
 
   return (
-    <nav className="w-full flex py-6 justify-between items-center navbar">
-      <div className="flex items-center justify-center gap-2">
-        <img src={logoIcon} alt="easyCollect Logo" className="h-[38px]" />
-        <span className="text-white text-[28px] font-semibold font-poppins">
-          Easy<span className="text-secondary">Collect</span>
-        </span>
-      </div>
-      <ul className="list-none hidden sm:flex justify-end items-center flex-1">
+    <nav className="navbar flex w-full items-center justify-between py-6">
+      <Link to="/">
+        <div className="flex items-center justify-center gap-2">
+          <img src={logoIcon} alt="easyCollect Logo" className="h-[38px]" />
+          <span className="font-poppins text-[28px] font-semibold text-white">
+            Easy<span className="text-secondary">Collect</span>
+          </span>
+        </div>
+      </Link>
+      <ul className="hidden flex-1 list-none items-center justify-end sm:flex">
         {navLinks.map((nav, index) => (
           <li
             key={nav.id}
-            className={`font-poppins font-normal cursor-pointer text-[16px] text-white ${
+            className={`cursor-pointer font-poppins text-[16px] font-normal text-white ${
               index === navLinks.length - 1 ? "mr-0" : "mr-10"
             }`}
           >
@@ -27,21 +30,21 @@ const Navbar = () => {
         ))}
       </ul>
 
-      <div className="sm:hidden flex flex-1 justify-end items-center">
+      <div className="flex flex-1 items-center justify-end sm:hidden">
         <img
           src={showMenu ? close : menu}
           alt="menu"
-          className="w-[28px] h-[28px] object-contain"
+          className="h-[28px] w-[28px] object-contain"
           onClick={() => setShowMenu((prev) => !prev)}
         />
 
         {showMenu && (
-          <div className="p-6 bg-black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] rounded-xl sidebar">
-            <ul className="list-none flex flex-col justify-end items-center flex-1">
+          <div className="bg-black-gradient sidebar absolute right-0 top-20 mx-4 my-2 min-w-[140px] rounded-xl p-6">
+            <ul className="flex flex-1 list-none flex-col items-center justify-end">
               {navLinks.map((nav, index) => (
                 <li
                   key={nav.id}
-                  className={`font-poppins font-normal cursor-pointer text-[16px] text-white ${
+                  className={`cursor-pointer font-poppins text-[16px] font-normal text-white ${
                     index === navLinks.length - 1 ? "mb-0" : "mb-4"
                   }`}
                 >
