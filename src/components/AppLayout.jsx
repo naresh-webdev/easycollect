@@ -11,19 +11,17 @@ function AppLayout() {
 
   return (
     <div
-      className={`w-full overflow-x-hidden overflow-y-hidden  bg-primary ${pathname === "/signup" || pathname === "/login" ? "h-screen" : ""}`}
+      className={`${pathname === "/login" || pathname === "/signup" ? "h-screen" : ""} w-full overflow-x-hidden   bg-primary`}
     >
       {isLoading && <Loader />}
       {/* {true && <Loader />} */}
-      <div
-        className={`${styles.paddingX} ${styles.flexCenter} ${pathname === "/signup" || pathname === "/login" ? "h-[10%]" : ""}`}
-      >
+      <div className={`${styles.paddingX} ${styles.flexCenter} `}>
         <div className={`bg-primary ${styles.boxWidth}`}>
           <Navbar />
         </div>
       </div>
       <main
-        className={`${pathname === "/signup" || pathname === "/login" ? `h-[85%]` : ""} w-full overflow-hidden`}
+        className={`${pathname === "/login" || pathname === "/signup" ? "main-full" : ""} w-full overflow-y-auto overflow-x-hidden`}
       >
         <Outlet />
       </main>

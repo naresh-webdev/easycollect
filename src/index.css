@@ -139,3 +139,7 @@
   /* filter: blur(750px); */
   filter: blur(750px);
 }
+
+.main-full {
+  height: calc(100vh - 89.987px);
+}

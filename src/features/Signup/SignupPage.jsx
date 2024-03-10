@@ -4,12 +4,10 @@ import { avatar1 } from "../../assets";
 import Button from "../../components/Button";
 function SignupPage() {
   return (
-    <section className={`${styles.flexCenter} h-full w-full  bg-primary`}>
-      <div
-        className={`${styles.boxWidth} ${styles.flexCenter} overflow-hidden`}
-      >
+    <section className={`${styles.flexCenter} w-full bg-primary xs:h-full`}>
+      <div className={`${styles.boxWidth} ${styles.flexCenter} my-4`}>
         <div
-          className={`relative z-[5] h-full w-[90%] max-w-[600px] rounded-md bg-white py-8 ss:w-[60%] sm:w-[50%] lg:w-[40%]`}
+          className={`relative z-[5] my-4 w-[90%] max-w-[600px]  rounded-md bg-white py-8 ss:w-[60%] sm:w-[50%] lg:w-[40%]`}
         >
           <div className={`${styles.flexCenter}`}>
             <img src={avatar1} alt="logo" className=" h-[40px] w-[40px]" />
