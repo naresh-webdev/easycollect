@@ -26,7 +26,7 @@ const Hero = () => {
             <br className="hidden sm:block" />{" "}
             <span className="text-gradient">Group Fund</span>
           </h1>
-          <Link to="/signup" className="hidden ss:flex">
+          <Link to="/signup">
             <div className="mr-0 hidden ss:flex md:mr-4">
               <GetStarted />
             </div>
@@ -59,7 +59,9 @@ const Hero = () => {
       </div>
 
       <div className={`ss:hidden ${styles.flexCenter}`}>
-        <GetStarted />
+        <Link to="/signup">
+          <GetStarted />
+        </Link>
       </div>
     </section>
   );

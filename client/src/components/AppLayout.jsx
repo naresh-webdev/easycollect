@@ -11,13 +11,13 @@ function AppLayout() {
 
   return (
     <div
-      className={`${pathname === "/login" || pathname === "/signup" ? "h-screen" : ""} w-full overflow-x-hidden   bg-primary`}
+      className={`${pathname !== "/" ? "h-screen" : ""} w-full overflow-x-hidden   bg-primary`}
     >
       {isLoading && <Loader />}
       {/* {true && <Loader />} */}
       <div className={`${styles.paddingX} ${styles.flexCenter} `}>
         <div className={`bg-primary ${styles.boxWidth}`}>
-          <Navbar />
+          <Navbar isAuthenticated={true} />
         </div>
       </div>
       <main
