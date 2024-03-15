@@ -25,6 +25,16 @@ app.get("/", (req, res) => {
 
 app.use("/auth", authRouter);
 
+app.use((error, req, res, next) => {
+  const status = error.statusCode || 500;
+  const message = error.message;
+  res.status(status).json({
+    success: false,
+    message,
+    status,
+  });
+});
+
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
