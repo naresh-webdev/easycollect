@@ -1,10 +1,77 @@
-import { Form, Link } from "react-router-dom";
+import { Form, Link, useNavigate } from "react-router-dom";
 import styles, { layout } from "../../constants/styles";
 import { avatar1 } from "../../assets";
+import { signUpHandler } from "../../utils/servies";
 import Button from "../../components/Button";
+import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const notify = () =>
+  toast("Welcome! Signup successful.", {
+    autoClose: 5000,
+    theme: "light",
+  });
+const notifyFailure = () => {
+  toast.error("Signup failed, Try again", {
+    autoClose: 5000,
+    theme: "light",
+  });
+};
+
 function SignupPage() {
+  const [formData, setFormData] = useState({});
+  const [errorMessage, setErrorMessage] = useState(null);
+  if (errorMessage !== null) notifyFailure();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
+  };
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const { username, email, password } = formData;
+    if (!username || !email || !password) {
+      return setErrorMessage("Please fill out all fields");
+    }
+    try {
+      setLoading(true);
+      setErrorMessage(null);
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        return setErrorMessage(data.message.split(" ").slice(0, 3).join(" "));
+      }
+      if (res.ok) {
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      setErrorMessage(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <section className={`${styles.flexCenter} w-full bg-primary xs:h-full`}>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        className={`text-bold top-5 z-[100] -translate-x-1/2 text-center text-xl `}
+      />
       <div className={`${styles.boxWidth} ${styles.flexCenter} my-4`}>
         <div
           className={`relative z-[5] my-4 w-[90%] max-w-[490px]  rounded-md bg-white py-8 ss:w-[60%] sm:w-[50%] lg:w-[40%]`}
@@ -29,7 +96,7 @@ function SignupPage() {
           </div>
 
           <div className="mx-8 flex flex-col gap-3">
-            <Form className="my-8">
+            <Form className="my-8" onSubmit={handleSubmit}>
               <div className="mb-4 flex flex-col gap-1">
                 <label
                   htmlFor="userName"
@@ -40,9 +107,11 @@ function SignupPage() {
                 <input
                   className="rounded-md border-[2px] border-[#D8DADC] p-2 focus:border-primary focus:outline-none "
                   type="text"
-                  name="userName"
-                  id="userName"
+                  name="username"
+                  id="username"
+                  onChange={handleChange}
                   placeholder="Enter your username"
+                  required
                 />
               </div>
               <div className="mb-4 flex flex-col gap-1">
@@ -57,7 +126,9 @@ function SignupPage() {
                   type="email"
                   name="email"
                   id="email"
+                  onChange={handleChange}
                   placeholder="Enter your email"
+                  required
                 />
               </div>
               <div className="mb-4 flex flex-col gap-1">
@@ -72,7 +143,9 @@ function SignupPage() {
                   type="password"
                   name="password"
                   id="password"
+                  onChange={handleChange}
                   placeholder="Enter your password"
+                  required
                 />
               </div>
               <div className=" flex items-center gap-2">
@@ -81,6 +154,8 @@ function SignupPage() {
                   type="checkbox"
                   id="agreeTerms"
                   name="agreeTerms"
+                  required
+                  defaultChecked
                 />
                 <label
                   htmlFor="agreeTerms"
@@ -89,11 +164,20 @@ function SignupPage() {
                   I agree to the terms and conditions
                 </label>
               </div>
+
+              <Button styles="mt-5 w-full" type="submit" disabled={loading}>
+                Create Account
+              </Button>
             </Form>
 
-            <Button>Create Account</Button>
-
-            <Button type="secondary">Sign up with Google</Button>
+            <Button
+              styles="-mt-7"
+              type="secondary"
+              onClick={notify}
+              disabled={loading}
+            >
+              Sign up with Google
+            </Button>
           </div>
         </div>
 

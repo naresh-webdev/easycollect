@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
   res.json({ message: "Hello from server" });
 });
 
-app.use("/auth", authRouter);
+app.use("/api/auth", authRouter);
 
 app.use((error, req, res, next) => {
   const status = error.statusCode || 500;
