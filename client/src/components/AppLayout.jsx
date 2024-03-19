@@ -21,7 +21,7 @@ function AppLayout() {
         </div>
       </div>
       <main
-        className={`${pathname === "/login" || pathname === "/signup" ? "main-full" : ""} w-full overflow-y-auto overflow-x-hidden`}
+        className={`${pathname === "/login" || pathname === "/signup" ? "main-full" : ""} w-full overflow-y-auto  overflow-x-hidden`}
       >
         <Outlet />
       </main>

@@ -1,14 +1,13 @@
 import { Form, Link, useNavigate } from "react-router-dom";
 import styles, { layout } from "../../constants/styles";
 import { avatar1 } from "../../assets";
-import { signUpHandler } from "../../utils/servies";
 import Button from "../../components/Button";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const notify = () =>
-  toast("Welcome! Signup successful.", {
+const notifySuccess = () =>
+  toast.success("Welcome! Signup successful.", {
     autoClose: 5000,
     theme: "light",
   });
@@ -22,7 +21,6 @@ const notifyFailure = () => {
 function SignupPage() {
   const [formData, setFormData] = useState({});
   const [errorMessage, setErrorMessage] = useState(null);
-  if (errorMessage !== null) notifyFailure();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -34,7 +32,9 @@ function SignupPage() {
     e.preventDefault();
     const { username, email, password } = formData;
     if (!username || !email || !password) {
-      return setErrorMessage("Please fill out all fields");
+      setErrorMessage("Please fill out all fields");
+      notifyFailure();
+      return;
     }
     try {
       setLoading(true);
@@ -46,13 +46,20 @@ function SignupPage() {
       });
       const data = await res.json();
       if (data.success === false) {
-        return setErrorMessage(data.message.split(" ").slice(0, 3).join(" "));
+        setErrorMessage(data.message.split(" ").slice(0, 3).join(" "));
+        notifyFailure();
+        return;
       }
       if (res.ok) {
-        navigate("/dashboard");
+        notifySuccess();
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 2500);
       }
     } catch (error) {
       setErrorMessage(error.message);
+      notifyFailure();
+      return;
     } finally {
       setLoading(false);
     }
@@ -61,6 +68,7 @@ function SignupPage() {
   return (
     <section className={`${styles.flexCenter} w-full bg-primary xs:h-full`}>
       <ToastContainer
+        limit={1}
         position="top-center"
         autoClose={5000}
         hideProgressBar={false}
@@ -173,7 +181,7 @@ function SignupPage() {
             <Button
               styles="-mt-7"
               type="secondary"
-              onClick={notify}
+              onClick={notifySuccess}
               disabled={loading}
             >
               Sign up with Google
