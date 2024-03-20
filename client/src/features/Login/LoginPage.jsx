@@ -31,7 +31,7 @@ function LoginPage() {
           </div>
 
           <div className="mx-8 flex flex-col gap-3">
-            <Form className="my-8">
+            <Form className="mb-2 mt-8">
               <div className="mb-4 flex flex-col gap-1">
                 <label
                   htmlFor="email"
@@ -64,7 +64,9 @@ function LoginPage() {
               </div>
             </Form>
 
-            <Button styles={"mt-[-16px]"}>Login</Button>
+            <Link to={"/dashboard"} className="mt-0 w-full">
+              <Button styles={"mt-[-16px] w-full mt-0"}>Login</Button>
+            </Link>
 
             <Button type="secondary">Continue with Google</Button>
           </div>
