@@ -57,12 +57,11 @@ const Hero = () => {
         <div className="blue__gradient absolute bottom-20 right-20 z-[0] h-[10%] w-[50%]"></div>{" "}
         */
       </div>
-
-      <div className={`ss:hidden ${styles.flexCenter}`}>
-        <Link to="/signup">
+      <Link to="/signup">
+        <div className={`ss:hidden ${styles.flexCenter}`}>
           <GetStarted />
-        </Link>
-      </div>
+        </div>
+      </Link>
     </section>
   );
 };
