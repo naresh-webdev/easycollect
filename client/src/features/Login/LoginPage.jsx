@@ -1,10 +1,78 @@
-import { Form, Link } from "react-router-dom";
+import { useState } from "react";
+import { Form, Link, useNavigate } from "react-router-dom";
 import styles from "../../constants/styles";
-import { avatar1 } from "../../assets";
 import Button from "../../components/Button";
+
+import { avatar1 } from "../../assets";
+
+import { notifySuccess, notifyFailure } from "../../utils/notifications";
+import { ToastContainer } from "react-toastify";
+
 function LoginPage() {
+  const [formData, setFormData] = useState({});
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
+  };
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const { email, password } = formData;
+    if (!email || !password) {
+      setErrorMessage("Please fill out all fields");
+      notifyFailure("Please fill out all fields");
+      return;
+    }
+    try {
+      setLoading(true);
+      setErrorMessage(null);
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        setErrorMessage(data.message.split(" ").slice(0, 3).join(" "));
+        console.log("error in login :", data);
+        notifyFailure("Login failed 😔");
+        return;
+      }
+      if (res.ok) {
+        notifySuccess("Signup successful 🎉");
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 2500);
+      }
+    } catch (error) {
+      setErrorMessage(error.message);
+      console.log(error);
+      notifyFailure("Signup failed 😔");
+      return;
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <section className={`${styles.flexCenter} h-full w-full  bg-primary`}>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        limit={1}
+        className={`${styles.boxWidth} ${styles.flexCenter} mt-2 rounded-sm`}
+      />
       <div
         className={`${styles.boxWidth} ${styles.flexCenter} overflow-hidden`}
       >
@@ -31,7 +99,7 @@ function LoginPage() {
           </div>
 
           <div className="mx-8 flex flex-col gap-3">
-            <Form className="mb-2 mt-8">
+            <Form className="mb-2 mt-8" onSubmit={handleSubmit}>
               <div className="mb-4 flex flex-col gap-1">
                 <label
                   htmlFor="email"
@@ -45,6 +113,7 @@ function LoginPage() {
                   name="email"
                   id="email"
                   placeholder="Enter your email"
+                  onChange={handleChange}
                 />
               </div>
               <div className="mb-4 flex flex-col gap-1">
@@ -60,15 +129,20 @@ function LoginPage() {
                   name="password"
                   id="password"
                   placeholder="Enter your password"
+                  onChange={handleChange}
                 />
               </div>
+              <Button type="submit" disabled={loading} styles={`w-full mt-5`}>
+                Login
+              </Button>
             </Form>
 
-            <Link to={"/dashboard"} className="mt-0 w-full">
-              <Button styles={"mt-[-16px] w-full mt-0"}>Login</Button>
-            </Link>
-
-            <Button type="secondary">Continue with Google</Button>
+            <Button
+              type="secondary"
+              onClick={() => notifySuccess("login Success")}
+            >
+              Continue with Google
+            </Button>
           </div>
         </div>
 

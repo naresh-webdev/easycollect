@@ -3,20 +3,9 @@ import styles, { layout } from "../../constants/styles";
 import { avatar1 } from "../../assets";
 import Button from "../../components/Button";
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import { notifySuccess, notifyFailure } from "../../utils/notifications";
 import "react-toastify/dist/ReactToastify.css";
-
-const notifySuccess = () =>
-  toast.success("Welcome! Signup successful.", {
-    autoClose: 5000,
-    theme: "light",
-  });
-const notifyFailure = () => {
-  toast.error("Signup failed, Try again", {
-    autoClose: 5000,
-    theme: "light",
-  });
-};
 
 function SignupPage() {
   const [formData, setFormData] = useState({});
@@ -33,7 +22,7 @@ function SignupPage() {
     const { username, email, password } = formData;
     if (!username || !email || !password) {
       setErrorMessage("Please fill out all fields");
-      notifyFailure();
+      notifyFailure("Please fill out all fields");
       return;
     }
     try {
@@ -47,18 +36,20 @@ function SignupPage() {
       const data = await res.json();
       if (data.success === false) {
         setErrorMessage(data.message.split(" ").slice(0, 3).join(" "));
-        notifyFailure();
+        console.log("error in signup :", data);
+        notifyFailure("Signup failed 😔");
         return;
       }
       if (res.ok) {
-        notifySuccess();
+        notifySuccess("Signup successful 🎉");
         setTimeout(() => {
           navigate("/dashboard");
         }, 2500);
       }
     } catch (error) {
       setErrorMessage(error.message);
-      notifyFailure();
+      console.log(error);
+      notifyFailure("Signup failed 😔");
       return;
     } finally {
       setLoading(false);
@@ -68,7 +59,6 @@ function SignupPage() {
   return (
     <section className={`${styles.flexCenter} w-full bg-primary xs:h-full`}>
       <ToastContainer
-        limit={1}
         position="top-center"
         autoClose={5000}
         hideProgressBar={false}
@@ -78,7 +68,9 @@ function SignupPage() {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        className={`text-bold top-5 z-[100] -translate-x-1/2 text-center text-xl `}
+        theme="light"
+        limit={1}
+        className={`${styles.boxWidth} ${styles.flexCenter} mt-2 rounded-sm`}
       />
       <div className={`${styles.boxWidth} ${styles.flexCenter} my-4`}>
         <div
@@ -181,7 +173,7 @@ function SignupPage() {
             <Button
               styles="-mt-7"
               type="secondary"
-              onClick={notifySuccess}
+              onClick={() => notifySuccess("Signup successful 🎉")}
               disabled={loading}
             >
               Sign up with Google
