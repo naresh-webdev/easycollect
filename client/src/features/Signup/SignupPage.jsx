@@ -2,16 +2,33 @@ import { Form, Link, useNavigate } from "react-router-dom";
 import styles, { layout } from "../../constants/styles";
 import { avatar1 } from "../../assets";
 import Button from "../../components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { notifySuccess, notifyFailure } from "../../utils/notifications";
 import "react-toastify/dist/ReactToastify.css";
 
+import { useDispatch, useSelector } from "react-redux";
+import {
+  signInStart as signupStart,
+  signInFailure as signupFailure,
+  signInSuccess as signupSuccess,
+} from "../../redux/user/userSlice";
+import OAuth from "../../components/Oauth";
+
 function SignupPage() {
   const [formData, setFormData] = useState({});
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const { loading, currentUser } = useSelector((state) => state.user);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const isAuthenticated = currentUser !== null;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
@@ -21,13 +38,13 @@ function SignupPage() {
     e.preventDefault();
     const { username, email, password } = formData;
     if (!username || !email || !password) {
-      setErrorMessage("Please fill out all fields");
+      dispatch(signupFailure("Please fill out all fields"));
       notifyFailure("Please fill out all fields");
       return;
     }
     try {
-      setLoading(true);
-      setErrorMessage(null);
+      dispatch(signupStart());
+
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-type": "application/json" },
@@ -35,24 +52,24 @@ function SignupPage() {
       });
       const data = await res.json();
       if (data.success === false) {
-        setErrorMessage(data.message.split(" ").slice(0, 3).join(" "));
-        console.log("error in signup :", data);
+        dispatch(signupFailure(data.message));
         notifyFailure("Signup failed 😔");
         return;
       }
       if (res.ok) {
         notifySuccess("Signup successful 🎉");
+
         setTimeout(() => {
+          dispatch(signupSuccess(data));
           navigate("/dashboard");
         }, 2500);
       }
     } catch (error) {
-      setErrorMessage(error.message);
-      console.log(error);
+      dispatch(signupFailure(error.message));
       notifyFailure("Signup failed 😔");
       return;
     } finally {
-      setLoading(false);
+      setFormData({});
     }
   }
 
@@ -96,7 +113,7 @@ function SignupPage() {
           </div>
 
           <div className="mx-8 flex flex-col gap-3">
-            <Form className="my-8" onSubmit={handleSubmit}>
+            <Form className="mb-1 mt-8" onSubmit={handleSubmit}>
               <div className="mb-4 flex flex-col gap-1">
                 <label
                   htmlFor="userName"
@@ -170,14 +187,7 @@ function SignupPage() {
               </Button>
             </Form>
 
-            <Button
-              styles="-mt-7"
-              type="secondary"
-              onClick={() => notifySuccess("Signup successful 🎉")}
-              disabled={loading}
-            >
-              Sign up with Google
-            </Button>
+            <OAuth />
           </div>
         </div>
 

@@ -17,7 +17,7 @@ function AppLayout() {
       {/* {true && <Loader />} */}
       <div className={`${styles.paddingX} ${styles.flexCenter} `}>
         <div className={`bg-primary ${styles.boxWidth}`}>
-          <Navbar isAuthenticated={true} />
+          <Navbar />
         </div>
       </div>
       <main

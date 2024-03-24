@@ -1,18 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Link, useNavigate } from "react-router-dom";
 import styles from "../../constants/styles";
 import Button from "../../components/Button";
+
+import { useDispatch, useSelector } from "react-redux";
+import {
+  signInStart,
+  signInFailure,
+  signInSuccess,
+} from "../../redux/user/userSlice";
 
 import { avatar1 } from "../../assets";
 
 import { notifySuccess, notifyFailure } from "../../utils/notifications";
 import { ToastContainer } from "react-toastify";
+import OAuth from "../../components/Oauth";
 
 function LoginPage() {
   const [formData, setFormData] = useState({});
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const { loading, currentUser } = useSelector((state) => state.user);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const isAuthenticated = currentUser !== null;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
@@ -20,15 +37,13 @@ function LoginPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    console.log(formData, "formdata");
     const { email, password } = formData;
     if (!email || !password) {
-      setErrorMessage("Please fill out all fields");
-      notifyFailure("Please fill out all fields");
-      return;
+      return dispatch(signInFailure("Please fill all the fields"));
     }
     try {
-      setLoading(true);
-      setErrorMessage(null);
+      dispatch(signInStart());
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-type": "application/json" },
@@ -36,24 +51,23 @@ function LoginPage() {
       });
       const data = await res.json();
       if (data.success === false) {
-        setErrorMessage(data.message.split(" ").slice(0, 3).join(" "));
-        console.log("error in login :", data);
+        dispatch(signInFailure(data.message));
         notifyFailure("Login failed 😔");
         return;
       }
       if (res.ok) {
-        notifySuccess("Signup successful 🎉");
+        notifySuccess("Login successful 🎉");
         setTimeout(() => {
+          dispatch(signInSuccess(data));
           navigate("/dashboard");
         }, 2500);
       }
     } catch (error) {
-      setErrorMessage(error.message);
-      console.log(error);
-      notifyFailure("Signup failed 😔");
+      dispatch(signInFailure(error.message));
+      notifyFailure("Login failed 😔");
       return;
     } finally {
-      setLoading(false);
+      setFormData({});
     }
   }
 
@@ -99,7 +113,7 @@ function LoginPage() {
           </div>
 
           <div className="mx-8 flex flex-col gap-3">
-            <Form className="mb-2 mt-8" onSubmit={handleSubmit}>
+            <Form className="mb-1 mt-8" onSubmit={handleSubmit}>
               <div className="mb-4 flex flex-col gap-1">
                 <label
                   htmlFor="email"
@@ -114,6 +128,7 @@ function LoginPage() {
                   id="email"
                   placeholder="Enter your email"
                   onChange={handleChange}
+                  required
                 />
               </div>
               <div className="mb-4 flex flex-col gap-1">
@@ -130,6 +145,7 @@ function LoginPage() {
                   id="password"
                   placeholder="Enter your password"
                   onChange={handleChange}
+                  required
                 />
               </div>
               <Button type="submit" disabled={loading} styles={`w-full mt-5`}>
@@ -137,12 +153,7 @@ function LoginPage() {
               </Button>
             </Form>
 
-            <Button
-              type="secondary"
-              onClick={() => notifySuccess("login Success")}
-            >
-              Continue with Google
-            </Button>
+            <OAuth />
           </div>
         </div>
 
