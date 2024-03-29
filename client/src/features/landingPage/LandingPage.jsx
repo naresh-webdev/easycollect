@@ -1,6 +1,5 @@
 import styles from "../../constants/styles";
 import {
-  Navbar,
   Billing,
   CardDeal,
   Business,
@@ -12,7 +11,21 @@ import {
   Hero,
 } from "../../components";
 
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+
 const LandingPage = () => {
+  const { currentUser } = useSelector((state) => state.user);
+  const isAuthenticated = currentUser !== null;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [isAuthenticated, navigate]);
+
   return (
     <>
       <div className={`bg-primary ${styles.flexStart}`}>

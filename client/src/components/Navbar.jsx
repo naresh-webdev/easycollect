@@ -34,7 +34,7 @@ const Navbar = () => {
           {navLinks.map((nav, index) => (
             <li
               key={nav.id}
-              className={`cursor-pointer font-poppins text-[16px] font-normal text-white ${"mr-4 md:mr-6"}`}
+              className={`cursor-pointer font-poppins text-[16px] font-normal text-white ${"mr-4 md:mr-6"} ${nav.title === "Profile" ? "hidden" : ""}`}
             >
               <a
                 href={`${nav.id}`}
@@ -46,11 +46,13 @@ const Navbar = () => {
           ))}
 
           <div className="flex cursor-pointer items-center justify-center">
-            <img
-              src={`${currentUser.userInfo.photoURL || avatar1}`}
-              alt="avatar img"
-              className="h-[48px] w-[48px] rounded-[100%]"
-            />
+            <Link className="cursor-pointer" to={"/userprofile"}>
+              <img
+                src={`${currentUser.userInfo.photoURL || avatar1}`}
+                alt="avatar img"
+                className="h-[48px] w-[48px] rounded-[100%]"
+              />
+            </Link>
           </div>
         </ul>
       )}
@@ -72,9 +74,9 @@ const Navbar = () => {
                     key={nav.id}
                     className={`cursor-pointer font-poppins text-[16px] font-normal text-white ${
                       index === navLinks.length - 1 ? "mb-0" : "mb-4"
-                    }`}
+                    } `}
                   >
-                    <a href={`${nav.id}`}>{nav.title}</a>
+                    <Link to={`${nav.id}`}>{nav.title}</Link>
                   </li>
                 ))}
               </ul>

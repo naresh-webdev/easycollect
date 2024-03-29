@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles, { layout } from "../../constants/styles";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Box({ title }) {
   return (
@@ -13,6 +15,16 @@ function Box({ title }) {
 
 function DashboardPage() {
   const [newUser, setNewUser] = useState(false);
+  const navigate = useNavigate();
+  const { currentUser } = useSelector((state) => state.user);
+
+  const isAuthenticated = currentUser == null;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/signup");
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <section
@@ -21,7 +33,7 @@ function DashboardPage() {
       {newUser ? (
         <h1 className="text-white">Create your First Room</h1>
       ) : (
-        <div className=" my-6 flex flex-col flex-wrap space-y-6 px-4 ss:grid  ss:gap-x-4 ss:gap-y-4 ss:space-y-0 min-[940px]:grid-cols-2 lg:gap-x-6 lg:gap-y-6 min-[1450px]:grid-cols-3">
+        <div className="mb-6 flex flex-col flex-wrap space-y-6 px-4 ss:grid  ss:gap-x-4 ss:gap-y-4 ss:space-y-0 min-[940px]:grid-cols-2 lg:gap-x-6 lg:gap-y-6 min-[1450px]:grid-cols-3">
           <Box title="Birthday Party" />
           <Box title="Cultural Festival" />
           <Box title="Welfare Contribution" />

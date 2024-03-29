@@ -17,6 +17,10 @@ import {
 
 export const navLinks = [
   {
+    id: "/userprofile",
+    title: "Profile",
+  },
+  {
     id: "createSession",
     title: "Create Session",
   },

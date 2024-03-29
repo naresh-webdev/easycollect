@@ -4,6 +4,7 @@ import AppLayout from "./components/AppLayout";
 import SignupPage from "./features/Signup/SignupPage";
 import LoginPage from "./features/Login/LoginPage";
 import Dashboard from "./features/Dashboard/DashboardPage";
+import Profile from "./features/Dashboard/Profile";
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -24,6 +25,10 @@ const App = () => {
         {
           path: "/dashboard",
           element: <Dashboard />,
+        },
+        {
+          path: "/userprofile",
+          element: <Profile />,
         },
       ],
     },
