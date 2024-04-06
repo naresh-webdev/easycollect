@@ -143,3 +143,7 @@
 .main-full {
   height: calc(100vh - 89.987px);
 }
+
+.main-full-auth {
+  height: calc(100vh - 111.95px);
+}

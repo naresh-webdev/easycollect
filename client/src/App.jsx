@@ -5,6 +5,8 @@ import SignupPage from "./features/Signup/SignupPage";
 import LoginPage from "./features/Login/LoginPage";
 import Dashboard from "./features/Dashboard/DashboardPage";
 import Profile from "./features/Dashboard/Profile";
+import CreateSession from "./features/Session/CreateSession";
+
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -29,6 +31,10 @@ const App = () => {
         {
           path: "/userprofile",
           element: <Profile />,
+        },
+        {
+          path: "/createsession",
+          element: <CreateSession />,
         },
       ],
     },

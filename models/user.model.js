@@ -20,6 +20,11 @@ const userScheme = new mongoose.Schema(
       type: String,
       default: "",
     },
+    sessions: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Session",
+      default: [],
+    },
   },
   { timestamps: true }
 );

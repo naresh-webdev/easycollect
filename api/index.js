@@ -14,6 +14,7 @@ mongoose
   });
 
 import authRouter from "../routes/auth.route.js";
+import sessionRouter from "../routes/session.route.js";
 
 const app = express();
 
@@ -24,6 +25,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRouter);
+
+app.use("/api/session", sessionRouter);
 
 app.use((error, req, res, next) => {
   const status = error.statusCode || 500;
