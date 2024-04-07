@@ -36,12 +36,12 @@ const Navbar = () => {
               key={nav.id}
               className={`cursor-pointer font-poppins text-[16px] font-normal text-white ${"mr-4 md:mr-6"} ${nav.title === "Profile" ? "hidden" : ""}`}
             >
-              <a
-                href={`${nav.id}`}
+              <Link
+                to={`${nav.id}`}
                 className="cursor-pointer transition-all ease-in hover:text-secondary"
               >
                 {nav.title}
-              </a>
+              </Link>
             </li>
           ))}
 

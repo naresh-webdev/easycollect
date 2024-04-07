@@ -6,6 +6,7 @@ import LoginPage from "./features/Login/LoginPage";
 import Dashboard from "./features/Dashboard/DashboardPage";
 import Profile from "./features/Dashboard/Profile";
 import CreateSession from "./features/Session/CreateSession";
+import Session from "./features/Session/Session";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -35,6 +36,10 @@ const App = () => {
         {
           path: "/createsession",
           element: <CreateSession />,
+        },
+        {
+          path: "/session/:id",
+          element: <Session />,
         },
       ],
     },

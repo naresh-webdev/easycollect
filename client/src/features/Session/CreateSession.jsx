@@ -3,6 +3,9 @@ import Button from "../../components/Button";
 import styles from "../../constants/styles";
 import { useSelector } from "react-redux";
 import { Form } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import { notifySuccess, notifyFailure } from "../../utils/notifications";
+import { useNavigate } from "react-router-dom";
 
 function CreateSession() {
   const [formData, setFormData] = useState({
@@ -13,6 +16,7 @@ function CreateSession() {
   });
   const [loading, setLoading] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -20,12 +24,11 @@ function CreateSession() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData, "formdata");
     const { sessionName, fundAmount, validity, description } = formData;
     const adminId = currentUser.userInfo._id;
 
     if (!sessionName || !fundAmount || !validity || !description) {
-      console.log("Fill out the form!");
+      notifyFailure("Please fill all the fields");
       return;
     }
     try {
@@ -43,19 +46,16 @@ function CreateSession() {
       });
       const data = await res.json();
       if (data.success === false) {
-        // dispatch(signInFailure(data.message));
-        // notifyFailure("Login failed 😔");
-        console.log(data.message, "error");
+        notifyFailure("Session Creation Failed 😔");
+        console.error(data.message, "error in session creation");
         return;
       }
       if (res.ok) {
-        // notifySuccess("Login successful 🎉");
-        // setTimeout(() => {
-        //   dispatch(signInSuccess(data));
-        //   navigate("/dashboard");
-        // }, 2500);
+        notifySuccess("Session Created 🎉");
+        setTimeout(() => {
+          navigate(`/session/${data.id}`);
+        }, 2500);
         console.log(data, "data");
-        console.log("Session Created Successfully");
       }
     } catch (error) {
       console.error(error);
@@ -72,7 +72,7 @@ function CreateSession() {
 
   return (
     <section className={`${styles.flexCenter} h-full w-full bg-primary`}>
-      {/* <ToastContainer
+      <ToastContainer
         position="top-center"
         autoClose={5000}
         hideProgressBar={false}
@@ -85,19 +85,20 @@ function CreateSession() {
         theme="light"
         limit={1}
         className={`${styles.boxWidth} ${styles.flexCenter} mt-2 rounded-sm`}
-      /> */}
+      />
+
       <div
         className={`${styles.boxWidth} ${styles.flexCenter} overflow-hidden`}
       >
         <div
-          className={`relative z-[5] h-full w-[90%] max-w-[490px] rounded-md bg-white py-8 ss:w-[60%] sm:w-[50%] lg:w-[40%]`}
+          className={`relative z-[5] h-full w-[90%]  max-w-[490px] overflow-hidden rounded-md  bg-white  px-2 py-6 ss:w-[60%] sm:w-[50%] lg:w-[40%]`}
         >
-          <div className={`${styles.flexCenter}`}>
-            {/* <img src={avatar1} alt="logo" className=" h-[40px] w-[40px]" /> */}
-          </div>
+          {/* <div className={`${styles.flexCenter}`}>
+            <img src={avatar1} alt="logo" className=" h-[40px] w-[40px]" />
+          </div> */}
 
-          <div>
-            <h1 className="mt-4 text-center font-poppins text-3xl text-[18px] font-semibold text-primary">
+          <div className="">
+            <h1 className=" text-center font-poppins text-3xl text-[18px] font-semibold text-primary">
               Enter Your Session Details! 📝
             </h1>
             <p className="text-center font-poppins text-[14px] text-primary">
@@ -179,7 +180,7 @@ function CreateSession() {
                 />
               </div>
 
-              <Button type="submit" disabled={loading} styles={`w-full mt-5`}>
+              <Button type="submit" disabled={loading} styles={`w-full mt-2`}>
                 Create Session 🚀
               </Button>
             </Form>

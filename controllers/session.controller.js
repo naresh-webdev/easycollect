@@ -40,3 +40,21 @@ export const createSession = async (req, res, next) => {
     return next(errorHandler(`Session Creation Failed ${error.message}`, 500));
   }
 };
+
+export const getSession = async (req, res, next) => {
+  const { id } = req.params;
+  console.log(id, "id from session controller");
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return next(errorHandler("User not found", 404));
+    }
+    const populatedUser = await user.populate("sessions");
+    console.log(populatedUser, "sessions");
+    res.status(200).json({
+      sessions: populatedUser.sessions,
+    });
+  } catch (error) {
+    return next(errorHandler(`Session not found ${error.message}`, 404));
+  }
+};
