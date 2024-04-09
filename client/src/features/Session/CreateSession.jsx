@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Button from "../../components/Button";
 import styles from "../../constants/styles";
-import { useSelector } from "react-redux";
 import { Form } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { notifySuccess, notifyFailure } from "../../utils/notifications";
@@ -15,7 +14,6 @@ function CreateSession() {
     description: "",
   });
   const [loading, setLoading] = useState(false);
-  const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -25,7 +23,6 @@ function CreateSession() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { sessionName, fundAmount, validity, description } = formData;
-    const adminId = currentUser.userInfo._id;
 
     if (!sessionName || !fundAmount || !validity || !description) {
       notifyFailure("Please fill all the fields");
@@ -33,15 +30,20 @@ function CreateSession() {
     }
     try {
       setLoading(true);
+      const accessToken = localStorage.getItem("access_token");
+
+      console.log(accessToken, "form create");
       const res = await fetch("/api/session/createSession", {
         method: "POST",
-        headers: { "Content-type": "application/json" },
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
         body: JSON.stringify({
           sessionName,
           fundAmount,
           validity,
           description,
-          adminId,
         }),
       });
       const data = await res.json();

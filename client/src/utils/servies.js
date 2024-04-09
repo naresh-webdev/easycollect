@@ -1,13 +1,13 @@
-export async function getSessionHandler(userId) {
+export async function getSessionHandler() {
   try {
-    const res = await fetch(`/api/session/getSession/${userId}`, {
+    const res = await fetch(`/api/session/getSession`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        // Authorization: `Bearer ${userInfo.token}`,
       },
     });
     const data = await res.json();
+    console.log("data : ", data);
     return data;
   } catch (error) {}
 }

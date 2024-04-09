@@ -50,6 +50,8 @@ function LoginPage() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
+
+      console.log(data, "data from login page");
       if (data.success === false) {
         dispatch(signInFailure(data.message));
         notifyFailure("Login failed 😔");

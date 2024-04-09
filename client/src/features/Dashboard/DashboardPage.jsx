@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import styles, { layout } from "../../constants/styles";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-
 import { useQuery } from "@tanstack/react-query";
 import { getSessionHandler } from "../../utils/servies";
 
@@ -20,10 +19,21 @@ function Box({ title, urlId }) {
 
 function DashboardPage() {
   const navigate = useNavigate();
+
   const { currentUser } = useSelector((state) => state.user);
+
+  // const sessionQuery = useQuery({
+  //   queryKey: ["sessions"],
+  //   queryFn: setTimeout(() => {
+  //     const accessToken = localStorage.getItem("access_token");
+  //     console.log(accessToken, "accessToken");
+  //     getSessionHandler(accessToken);
+  //   }, 3000),
+  // });
+
   const sessionQuery = useQuery({
     queryKey: ["sessions"],
-    queryFn: () => getSessionHandler(currentUser.userInfo._id),
+    queryFn: getSessionHandler,
   });
 
   const isNotAuthenticated = currentUser == null;

@@ -2,12 +2,24 @@ import { Outlet, useNavigation, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import Loader from "./Loader";
 import styles from "../constants/styles";
+import { useSelector } from "react-redux";
 
 function AppLayout() {
   const navigation = useNavigation();
   const { pathname } = useLocation();
+  const { currentUser } = useSelector((state) => state.user);
+  const isAuthenticated = currentUser !== null;
   console.log(navigation.state, "navigation", pathname);
   const isLoading = navigation.state === "loading";
+
+  const formPaths = [
+    "/login",
+    "/signup",
+    "/createsession",
+    "/joinsession",
+    "/",
+  ];
+  const formPageClass = isAuthenticated ? "main-full-auth" : "main-full";
 
   return (
     <div
@@ -21,7 +33,7 @@ function AppLayout() {
         </div>
       </div>
       <main
-        className={`${pathname === "/login" || pathname === "/signup" ? "main-full" : ""} ${pathname === "/createSession" ? "main-full-auth" : ""} w-full overflow-y-auto  overflow-x-hidden`}
+        className={`${formPaths.includes(pathname) ? formPageClass : ""}  w-full overflow-y-auto  overflow-x-hidden`}
       >
         <Outlet />
       </main>

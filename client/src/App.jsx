@@ -7,6 +7,7 @@ import Dashboard from "./features/Dashboard/DashboardPage";
 import Profile from "./features/Dashboard/Profile";
 import CreateSession from "./features/Session/CreateSession";
 import Session from "./features/Session/Session";
+import JoinSession from "./features/Session/JoinSession";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -40,6 +41,14 @@ const App = () => {
         {
           path: "/session/:id",
           element: <Session />,
+        },
+        {
+          path: "/joinsession/",
+          element: <JoinSession />,
+        },
+        {
+          path: "/joinsession/:id",
+          element: <JoinSession />,
         },
       ],
     },
