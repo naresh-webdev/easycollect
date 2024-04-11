@@ -11,11 +11,13 @@
     #6d6d6d -78.47%,
     #11101d 91.61%
   );
-  --card-shadow: 0px 20px 100px -10px rgba(66, 71, 91, 0.1);
 }
 
 * {
   scroll-behavior: smooth;
+  scrollbar-width: none;
+  --webkit-scrollbar-width: 0px;
+  -ms-overflow-style: none;
 }
 
 .text-gradient {
@@ -145,5 +147,10 @@
 }
 
 .main-full-auth {
-  height: calc(100vh - 111.95px);
+  height: calc(100vh - 111.979px);
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }

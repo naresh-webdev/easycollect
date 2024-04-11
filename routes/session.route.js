@@ -9,7 +9,7 @@ import { authenticateToken } from "../utils/Authorization.js";
 const router = express.Router();
 
 router.post("/createSession", authenticateToken, createSession);
-router.post("/joinSession", authenticateToken, joinSession);
+router.post("/joinSession/:id", authenticateToken, joinSession);
 router.get("/getSession", authenticateToken, getSession);
 
 export default router;

@@ -18,7 +18,7 @@ function Session() {
   );
   return (
     <section
-      className={`${layout.section} ${styles.flexCenter} ${styles.paddingY}  mx-4 overflow-hidden`}
+      className={`${layout.section} ${styles.flexCenter} ${styles.paddingY}  mx-4  overflow-hidden`}
     >
       <div className={`${styles.boxWidth} ${styles.flexCenter} flex-col`}>
         <h2 className={`${styles.heading2} my-1 text-center`}>

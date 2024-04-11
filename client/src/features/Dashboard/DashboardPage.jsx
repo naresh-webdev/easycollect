@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getSessionHandler } from "../../utils/servies";
+import Button from "../../components/Button";
 
 function Box({ title, urlId }) {
   return (
@@ -46,12 +47,21 @@ function DashboardPage() {
 
   return (
     <section
-      className={`${layout.section} ${styles.flexCenter}  mx-4 overflow-hidden`}
+      className={`${layout.section} ${styles.flexCenter} mx-4 overflow-hidden`}
     >
       {sessionQuery.data?.sessions.length === 0 ? (
-        <h1 className="text-white">Create your First Room</h1>
+        <div
+          className={`${styles.flexCenter} ${styles.paddingY}  mx-8 flex-col items-center justify-center gap-6`}
+        >
+          <h1 className={`${styles.heading2} ${styles.flexCenter} text-center`}>
+            Create your First Session 👇
+          </h1>
+          <Button onClick={() => navigate("/createsession")}>
+            Create Session 🚀
+          </Button>
+        </div>
       ) : (
-        <div className="mb-6 flex flex-col flex-wrap space-y-6 px-4 ss:grid  ss:gap-x-4 ss:gap-y-4 ss:space-y-0 min-[940px]:grid-cols-2 lg:gap-x-6 lg:gap-y-6 min-[1450px]:grid-cols-3">
+        <div className="mb-4 flex flex-col flex-wrap space-y-6 px-4 ss:grid  ss:gap-x-4 ss:gap-y-4 ss:space-y-0 min-[940px]:grid-cols-2 lg:gap-x-6 lg:gap-y-6 min-[1450px]:grid-cols-3">
           {sessionQuery.data?.sessions.map((session) => (
             <Box
               key={session._id}

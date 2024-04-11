@@ -1,12 +1,24 @@
 import { avatar1 } from "../../assets";
 import styles from "../../constants/styles";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { FaEdit } from "react-icons/fa";
+import Button from "../../components/Button";
+import { userLogout } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
+import { queryClient } from "../../main";
 
 function Profile() {
   const { currentUser } = useSelector((state) => state.user);
   const { userInfo } = currentUser;
-  console.log(userInfo);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logoutHandler = () => {
+    dispatch(userLogout());
+    queryClient.clear();
+    navigate("/");
+  };
+
   return (
     <div className={`${styles.flexCenter}`}>
       <div
@@ -105,6 +117,13 @@ function Profile() {
             {/* TODO: after creating a model be sure to add it here */}
             <p className="font-poppins text-lg text-dimWhite">Not Available</p>
           </div>
+        </div>
+
+        {/* create a section with logout option */}
+        <div className="mt-8 flex justify-center">
+          <Button type="secondary" onClick={logoutHandler}>
+            Logout
+          </Button>
         </div>
       </div>
     </div>

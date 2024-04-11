@@ -63,27 +63,41 @@ export const getSession = async (req, res, next) => {
 };
 
 export const joinSession = async (req, res, next) => {
-  const { id } = req.params;
-  const { userId } = req.body;
+  const { id: sessionId } = req.params;
+  const userId = req.user.userId;
+  console.log("user id : ", userId, "session id : ", sessionId);
 
   try {
-    const user = await Usre.findById(userId);
+    const user = await User.findById(userId);
     if (!user) {
       return next(errorHandler("User not found", 404));
     }
-    const session = await Session.findById(id);
+    const session = await Session.findById(sessionId);
     if (!session) {
       return next(errorHandler("Session not found", 404));
     }
+
+    if (session.adminId === userId) {
+      return res.status(200).json({
+        message: "You are already the admin of this session ✔",
+      });
+    }
+
+    if (session.membersList.includes(userId)) {
+      return res.status(200).json({
+        message: "You are already a member of this session ✔",
+      });
+    }
+
     session.membersList.push(userId);
-    user.sessions.push(id);
+    user.sessions.push(sessionId);
 
     const updatedSession = await session.save();
     const updatedUser = await user.save();
     if (!updatedSession || !updatedUser) {
       return next(errorHandler("Joining Session Failed", 500));
     }
-    res.status(200).json({ success: true });
+    res.status(200).json({ success: true, message: "Session Joined ✔" });
   } catch (error) {
     return next(errorHandler(`Joining Session Failed ${error.message}`, 500));
   }
