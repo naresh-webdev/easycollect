@@ -46,10 +46,6 @@ const App = () => {
           path: "/joinsession/",
           element: <JoinSession />,
         },
-        {
-          path: "/joinsession/:id",
-          element: <JoinSession />,
-        },
       ],
     },
   ]);

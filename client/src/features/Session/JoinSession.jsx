@@ -1,23 +1,70 @@
-import { Form, useParams } from "react-router-dom";
+import { Form, useNavigate, useParams } from "react-router-dom";
 import Button from "../../components/Button";
-import styles, { layout } from "../../constants/styles";
-import { useState } from "react";
+import styles from "../../constants/styles";
+import { useEffect, useState } from "react";
+import { notifySuccess, notifyFailure } from "../../utils/notifications";
+import { ToastContainer } from "react-toastify";
 
 function JoinSession() {
-  const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
-
-  const { id } = useParams();
-  console.log(id, "id");
-
   const [sessionId, setSessionId] = useState("");
+  const navigate = useNavigate();
 
-  const handleSessionId = (e) => {};
+  const joinSession = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(`/api/session/joinsession/${sessionId}`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
+      const data = await res.json();
+      console.log(data, "data from join session");
+      if (!data.success) {
+        notifyFailure(data.message);
+        console.error(data.message);
+        return;
+      }
+      notifySuccess("Session Joined Successfully 🎉");
+      console.log("Session Joined Successfully", data.message);
+      setTimeout(() => {
+        navigate(`/session/${sessionId}`);
+      }, 3000);
+    } catch (error) {
+      console.error(error);
+      notifyFailure("Something Went Wrong 😟");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const handleSubmit = async () => {};
+  const handleSessionId = (e) => {
+    setSessionId(e.target.value);
+  };
+
+  const handleJoinSession = (e) => {
+    e.preventDefault();
+    joinSession();
+  };
 
   return (
     <section className={`${styles.flexCenter} h-full w-full bg-primary`}>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        limit={1}
+        className={`${styles.boxWidth} ${styles.flexCenter} mt-2 rounded-sm`}
+      />
+
       <div
         className={`${styles.boxWidth} ${styles.flexCenter} overflow-hidden`}
       >
@@ -38,7 +85,7 @@ function JoinSession() {
           </div>
 
           <div className="mx-8 flex flex-col gap-3">
-            <Form className="mb-1 mt-8" onSubmit={handleSubmit}>
+            <Form className="mb-1 mt-8" onSubmit={handleJoinSession}>
               <div className="mb-4 flex flex-col gap-1">
                 <label
                   htmlFor="sessionName"
@@ -54,12 +101,12 @@ function JoinSession() {
                   placeholder="Enter Session Id"
                   onChange={handleSessionId}
                   required
-                  value={formData.sessionName}
+                  value={sessionId}
                 />
               </div>
 
               <Button type="submit" disabled={loading} styles={`w-full mt-2`}>
-                Create Session 🚀
+                Join Session 🚀
               </Button>
             </Form>
           </div>

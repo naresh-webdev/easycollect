@@ -9,5 +9,7 @@ export async function getSessionHandler() {
     const data = await res.json();
     console.log("data : ", data);
     return data;
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 }

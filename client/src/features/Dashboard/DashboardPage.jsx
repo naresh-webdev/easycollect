@@ -49,9 +49,9 @@ function DashboardPage() {
     <section
       className={`${layout.section} ${styles.flexCenter} mx-4 overflow-hidden`}
     >
-      {sessionQuery.data?.sessions.length === 0 ? (
+      {sessionQuery.data?.sessions?.length === 0 ? (
         <div
-          className={`${styles.flexCenter} ${styles.paddingY}  mx-8 flex-col items-center justify-center gap-6`}
+          className={`${styles.flexCenter} ${styles.paddingY}  mx-8 mb-4 flex-col items-center justify-center gap-6 md:mb-8`}
         >
           <h1 className={`${styles.heading2} ${styles.flexCenter} text-center`}>
             Create your First Session 👇
@@ -62,7 +62,7 @@ function DashboardPage() {
         </div>
       ) : (
         <div className="mb-4 flex flex-col flex-wrap space-y-6 px-4 ss:grid  ss:gap-x-4 ss:gap-y-4 ss:space-y-0 min-[940px]:grid-cols-2 lg:gap-x-6 lg:gap-y-6 min-[1450px]:grid-cols-3">
-          {sessionQuery.data?.sessions.map((session) => (
+          {sessionQuery.data?.sessions?.map((session) => (
             <Box
               key={session._id}
               title={session.sessionName}

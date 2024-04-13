@@ -25,6 +25,12 @@ export const createSession = async (req, res, next) => {
     description,
     validity,
     fundAmount,
+    membersList: [
+      {
+        userId: req.user.userId,
+        userName: admin.username,
+      },
+    ],
   });
 
   try {
@@ -65,7 +71,6 @@ export const getSession = async (req, res, next) => {
 export const joinSession = async (req, res, next) => {
   const { id: sessionId } = req.params;
   const userId = req.user.userId;
-  console.log("user id : ", userId, "session id : ", sessionId);
 
   try {
     const user = await User.findById(userId);
@@ -77,19 +82,26 @@ export const joinSession = async (req, res, next) => {
       return next(errorHandler("Session not found", 404));
     }
 
-    if (session.adminId === userId) {
+    if (session.adminId.toString() === userId) {
       return res.status(200).json({
+        success: true,
         message: "You are already the admin of this session ✔",
       });
     }
 
-    if (session.membersList.includes(userId)) {
+    if (
+      session.membersList.some((member) => member.userId.toString() === userId)
+    ) {
       return res.status(200).json({
+        success: true,
         message: "You are already a member of this session ✔",
       });
     }
 
-    session.membersList.push(userId);
+    session.membersList.push({
+      userId: userId,
+      userName: user.username,
+    });
     user.sessions.push(sessionId);
 
     const updatedSession = await session.save();

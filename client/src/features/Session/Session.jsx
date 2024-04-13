@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { getSessionHandler } from "../../utils/servies";
 import styles, { layout } from "../../constants/styles";
 import Button from "../../components/Button";
+import StyledTable from "../../components/StyledTable";
 
 function Session() {
   const { id } = useParams();
@@ -12,10 +13,14 @@ function Session() {
     queryKey: ["sessions"],
     queryFn: () => getSessionHandler(currentUser.userInfo._id),
   });
-  const sessionDetails = data.sessions.find((session) => session._id === id);
+  const sessionDetails = data?.sessions?.find((session) => session._id === id);
   const sessionValidDate = new Date(
     new Date().getTime() + sessionDetails?.validity * 24 * 60 * 60 * 1000,
   );
+
+  const membersData = sessionDetails?.membersList;
+  console.log(membersData, "membersData");
+
   return (
     <section
       className={`${layout.section} ${styles.flexCenter} ${styles.paddingY}  mx-4  overflow-hidden`}
@@ -32,13 +37,15 @@ function Session() {
             {sessionValidDate.toLocaleDateString()}
           </span>
         </p>
-        <div className="mt-6 flex items-center justify-center">
+        <div className="mt-6 flex  items-center justify-center">
           <Button>
             Pay{" "}
             <span className="font-semibold">₹{sessionDetails?.fundAmount}</span>{" "}
           </Button>
         </div>
-        <p>Session Validity: {sessionDetails?.validity}</p>
+        <div className="mt-8">
+          <StyledTable membersData={membersData} />
+        </div>
       </div>
     </section>
   );

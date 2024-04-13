@@ -20,13 +20,15 @@ function AppLayout() {
     "/dashboard",
   ];
 
-  let formPageClass = isAuthenticated ? "main-full-auth" : "main-full";
+  let formPageClass = isAuthenticated
+    ? "main-full-auth flex"
+    : "main-full flex";
   if (pathname === "/") formPageClass = "";
   console.log(pathname, "pathname");
 
   return (
     <div
-      className={`hide-scrollbar flex min-h-screen w-full flex-col overflow-x-hidden  bg-primary`}
+      className={`hide-scrollbar flex min-h-screen w-full flex-col  overflow-x-hidden  bg-primary`}
     >
       {isLoading && <Loader />}
       {/* {true && <Loader />} */}
@@ -36,7 +38,7 @@ function AppLayout() {
         </div>
       </div>
       <main
-        className={`${formPaths.includes(pathname) ? formPageClass : ""} hide-scrollbar w-full  flex-1 overflow-y-auto  overflow-x-hidden`}
+        className={`${formPaths.includes(pathname) ? formPageClass : ""} ${pathname === "/dashboard" ? "items-start" : "items-center"} hide-scrollbar  w-full flex-1  justify-center overflow-y-auto  overflow-x-hidden`}
       >
         <Outlet />
       </main>

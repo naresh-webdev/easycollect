@@ -17,7 +17,8 @@ import { ToastContainer } from "react-toastify";
 import OAuth from "../../components/Oauth";
 
 function LoginPage() {
-  const [formData, setFormData] = useState({});
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { loading, currentUser } = useSelector((state) => state.user);
 
   const navigate = useNavigate();
@@ -31,14 +32,8 @@ function LoginPage() {
     }
   }, [isAuthenticated, navigate]);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
-  };
-
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log(formData, "formdata");
-    const { email, password } = formData;
     if (!email || !password) {
       return dispatch(signInFailure("Please fill all the fields"));
     }
@@ -47,7 +42,10 @@ function LoginPage() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          email,
+          password,
+        }),
       });
       const data = await res.json();
 
@@ -67,9 +65,10 @@ function LoginPage() {
     } catch (error) {
       dispatch(signInFailure(error.message));
       notifyFailure("Login failed 😔");
-      return;
+      console.log(error, "error from login page");
     } finally {
-      setFormData({});
+      setEmail("");
+      setPassword("");
     }
   }
 
@@ -129,8 +128,9 @@ function LoginPage() {
                   name="email"
                   id="email"
                   placeholder="Enter your email"
-                  onChange={handleChange}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
+                  value={email}
                 />
               </div>
               <div className="mb-4 flex flex-col gap-1">
@@ -146,8 +146,9 @@ function LoginPage() {
                   name="password"
                   id="password"
                   placeholder="Enter your password"
-                  onChange={handleChange}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
+                  value={password}
                 />
               </div>
               <Button type="submit" disabled={loading} styles={`w-full mt-5`}>

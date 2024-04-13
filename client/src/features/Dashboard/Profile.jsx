@@ -28,7 +28,7 @@ function Profile() {
 
         <div className={`${styles.flexCenter} mt-4 md:mt-8`}>
           <img
-            src={`${userInfo.photoURL != null ? userInfo.photoURL : avatar1}`}
+            src={`${userInfo.photoURL !== "" ? userInfo.photoURL : avatar1}`}
             alt="avatar"
             className=" h-32 w-32 rounded-full"
           />
