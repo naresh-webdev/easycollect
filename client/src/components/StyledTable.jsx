@@ -10,7 +10,7 @@ import Paper from "@mui/material/Paper";
 import { useSelector } from "react-redux";
 
 const labelStyles = {
-  paid: `bg-green-500 text-white`,
+  authorized: `bg-green-500 text-white`,
   unpaid: `bg-red-500 text-white`,
 };
 
@@ -19,7 +19,7 @@ const Label = ({ statusMessage }) => {
     <div
       className={`${labelStyles[statusMessage]} inline-block rounded-sm  px-4 py-1.5 text-center text-xs font-[600] uppercase tracking-[1px]`}
     >
-      {statusMessage}
+      {statusMessage.toUpperCase()}
     </div>
   );
 };
@@ -65,7 +65,9 @@ function StyledTable({ membersData }) {
               </TableCell>
               <TableCell align="left">{member.userName}</TableCell>
               <TableCell align="left">
-                {member.paymentType === null ? "-" : member.paymentMode}
+                {member.paymentType === null
+                  ? "-"
+                  : member.paymentType.toUpperCase()}
               </TableCell>
               <TableCell align="left">
                 <Label statusMessage={member.paymentStatus.toLowerCase()} />

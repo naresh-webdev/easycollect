@@ -114,3 +114,37 @@ export const joinSession = async (req, res, next) => {
     return next(errorHandler(`Joining Session Failed ${error.message}`, 500));
   }
 };
+
+export const updateUserPaymentInfo = async (req, res, next) => {
+  const { id: sessionId } = req.params;
+  const userId = req.user.userId;
+  const { paymentType, paymentStatus } = req.body;
+
+  try {
+    const session = await Session.findById(sessionId);
+    if (!session) {
+      return next(errorHandler("Session not found", 404));
+    }
+
+    const memberIndex = session.membersList.findIndex(
+      (member) => member.userId.toString() === userId
+    );
+    if (memberIndex === -1) {
+      return next(errorHandler("User not found in the session", 404));
+    }
+
+    session.membersList[memberIndex].paymentType = paymentType;
+    session.membersList[memberIndex].paymentStatus = paymentStatus;
+    session.membersList[memberIndex].paidDate = new Date().toISOString();
+
+    const updatedSession = await session.save();
+    if (!updatedSession) {
+      return next(errorHandler("Updating Payment Info Failed", 500));
+    }
+    res.status(200).json({ success: true, message: "Payment Info Updated ✔" });
+  } catch (error) {
+    return next(
+      errorHandler(`Updating Payment Info Failed ${error.message}`, 500)
+    );
+  }
+};

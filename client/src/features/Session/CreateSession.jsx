@@ -30,18 +30,16 @@ function CreateSession() {
     }
     try {
       setLoading(true);
-      const accessToken = localStorage.getItem("access_token");
-
-      console.log(accessToken, "form create");
+      const addedAmount = parseInt(fundAmount) + fundAmount * 0.05;
+      console.log(addedAmount, "addedAmount");
       const res = await fetch("/api/session/createSession", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
           sessionName,
-          fundAmount,
+          fundAmount: addedAmount,
           validity,
           description,
         }),
@@ -132,8 +130,9 @@ function CreateSession() {
                 <label
                   htmlFor="fundAmount"
                   className="font-poppins font-medium text-primary"
+                  title="Transaction Fee will be added on top of this amount"
                 >
-                  Fund Amount
+                  Fund Amount (In ₹){" "}
                 </label>
                 <input
                   className="rounded-md border-[2px] border-[#D8DADC] p-2 focus:border-primary focus:outline-none"

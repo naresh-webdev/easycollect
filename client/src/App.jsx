@@ -8,6 +8,7 @@ import Profile from "./features/Dashboard/Profile";
 import CreateSession from "./features/Session/CreateSession";
 import Session from "./features/Session/Session";
 import JoinSession from "./features/Session/JoinSession";
+import Payment from "./components/Payment";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -45,6 +46,10 @@ const App = () => {
         {
           path: "/joinsession/",
           element: <JoinSession />,
+        },
+        {
+          path: "/payment",
+          element: <Payment />,
         },
       ],
     },
