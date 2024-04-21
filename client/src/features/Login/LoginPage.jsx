@@ -14,7 +14,7 @@ import { avatar1 } from "../../assets";
 
 import { notifySuccess, notifyFailure } from "../../utils/notifications";
 import { ToastContainer } from "react-toastify";
-import OAuth from "../../components/Oauth";
+import OAuth from "../../components/OAuth";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
