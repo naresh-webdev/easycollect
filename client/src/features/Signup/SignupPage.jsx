@@ -1,5 +1,5 @@
 import { Form, Link, useNavigate } from "react-router-dom";
-import styles, { layout } from "../../constants/styles";
+import styles from "../../constants/styles";
 import { avatar1 } from "../../assets";
 import Button from "../../components/Button";
 import { useEffect, useState } from "react";
@@ -13,7 +13,7 @@ import {
   signInFailure as signupFailure,
   signInSuccess as signupSuccess,
 } from "../../redux/user/userSlice";
-import OAuth from "../../components/Oauth";
+import OAuth from "../../components/OAuth";
 
 function SignupPage() {
   const [formData, setFormData] = useState({});
