@@ -29,10 +29,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use(cors());
 
-app.get("/", (req, res) => {
-  res.json({ message: "Hello from server" });
-});
-
 app.use("/api/auth", authRouter);
 app.use("/api/session", sessionRouter);
 app.use("/api/payment", paymentRoute);
