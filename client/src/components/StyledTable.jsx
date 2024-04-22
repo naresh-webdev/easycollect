@@ -8,6 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 import { useSelector } from "react-redux";
+import { createTheme, ThemeProvider } from "@mui/material";
 
 const labelStyles = {
   authorized: `bg-green-500 text-white`,
@@ -24,59 +25,98 @@ const Label = ({ statusMessage }) => {
   );
 };
 
+const theme = createTheme({
+  breakpoints: {
+    values: {
+      mobile: 0,
+      tablet: 690,
+      laptop: 1024,
+      desktop: 1280,
+    },
+  },
+});
+
 function StyledTable({ membersData }) {
   const { currentUser } = useSelector((state) => state.user);
   const { userInfo } = currentUser;
   console.log(userInfo, "currentUser");
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead
+    <ThemeProvider theme={theme}>
+      <TableContainer component={Paper}>
+        <Table
           sx={{
-            backgroundColor: "#fff",
+            minWidth: {
+              mobile: "85vw",
+              tablet: 650,
+              laptop: 750,
+            },
           }}
+          aria-label="simple table"
         >
-          <TableRow>
-            <TableCell sx={{ fontWeight: "bold" }}>S.No</TableCell>
-            <TableCell sx={{ fontWeight: "bold" }} align="left">
-              Name
-            </TableCell>
-            <TableCell sx={{ fontWeight: "bold" }} align="left">
-              Payment Mode
-            </TableCell>
-            <TableCell sx={{ fontWeight: "bold" }} align="left">
-              Payment Status
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {membersData?.map((member, index) => (
-            <TableRow
-              key={member.userId}
-              sx={{
-                "&:last-child td, &:last-child th ": { border: 0 },
-                backgroundColor:
-                  userInfo._id === member.userId ? "#d1fae5" : "#ffffffb2",
-              }}
-            >
-              <TableCell component="th" scope="row">
-                {index + 1}
+          <TableHead
+            sx={{
+              backgroundColor: "#fff",
+            }}
+          >
+            <TableRow>
+              <TableCell sx={{ fontWeight: "bold" }}>S.No</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }} align="left">
+                Name
               </TableCell>
-              <TableCell align="left">{member.userName}</TableCell>
-              <TableCell align="left">
-                {member.paymentType === null
-                  ? "-"
-                  : member.paymentType.toUpperCase()}
+              <TableCell sx={{ fontWeight: "bold" }} align="left">
+                Payment Mode
               </TableCell>
-              <TableCell align="left">
-                <Label statusMessage={member.paymentStatus.toLowerCase()} />
+              <TableCell
+                sx={{
+                  display: {
+                    mobile: "none",
+                    tablet: "block",
+                  },
+                  fontWeight: "bold",
+                }}
+                align="left"
+              >
+                Payment Status
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {membersData?.map((member, index) => (
+              <TableRow
+                key={member.userId}
+                sx={{
+                  "&:last-child td, &:last-child th ": { border: 0 },
+                  backgroundColor:
+                    userInfo._id === member.userId ? "#d1fae5" : "#ffffffb2",
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  {index + 1}
+                </TableCell>
+                <TableCell align="left">{member.userName}</TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    display: {
+                      mobile: "none",
+                      tablet: "block",
+                    },
+                  }}
+                >
+                  {member.paymentType === null
+                    ? "-"
+                    : member.paymentType.toUpperCase()}
+                </TableCell>
+                <TableCell align="left">
+                  <Label statusMessage={member.paymentStatus.toLowerCase()} />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ThemeProvider>
   );
 }
 

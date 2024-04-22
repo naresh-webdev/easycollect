@@ -2,7 +2,7 @@ import { useState } from "react";
 import { close, logoIcon, menu } from "../assets";
 
 import { navLinks } from "../constants";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 
@@ -15,6 +15,7 @@ const Navbar = () => {
   console.log(isAuthenticated, "isAuthenticated");
 
   const [showMenu, setShowMenu] = useState(false);
+  const { pathname } = useLocation();
 
   return (
     <nav
@@ -34,18 +35,18 @@ const Navbar = () => {
           {navLinks.map((nav, index) => (
             <li
               key={nav.id}
-              className={`cursor-pointer font-poppins text-[16px] font-normal text-white ${"mr-4 md:mr-6"} ${nav.title === "Profile" ? "hidden" : ""}`}
+              className={`z-[100] cursor-pointer font-poppins text-[16px] font-normal text-white ${"mr-4 md:mr-6"} ${nav.title === "Profile" ? "hidden" : ""}`}
             >
-              <Link
+              <NavLink
                 to={`${nav.id}`}
-                className="cursor-pointer transition-all ease-in hover:text-secondary"
+                className={`cursor-pointer transition-all ease-in hover:text-secondary ${nav.id === pathname ? "text-secondary" : ""}`}
               >
                 {nav.title}
-              </Link>
+              </NavLink>
             </li>
           ))}
 
-          <div className="flex cursor-pointer items-center justify-center">
+          <div className="z-[100] flex cursor-pointer items-center justify-center">
             <Link className="cursor-pointer" to={"/userprofile"}>
               <img
                 src={`${currentUser.userInfo.photoURL || avatar1}`}
@@ -62,15 +63,16 @@ const Navbar = () => {
           <img
             src={showMenu ? close : menu}
             alt="menu"
-            className="h-[28px] w-[28px] object-contain"
+            className="z-[100] h-[28px] w-[28px] object-contain"
             onClick={() => setShowMenu((prev) => !prev)}
           />
 
           {showMenu && (
-            <div className="bg-black-gradient sidebar absolute right-0 top-20 mx-4 my-2 min-w-[140px] rounded-xl p-6">
+            <div className="bg-black-gradient sidebar absolute right-0 top-20 z-[100] mx-4 my-2 min-w-[140px] rounded-xl p-6">
               <ul className="flex flex-1 list-none flex-col items-center justify-end">
                 {navLinks.map((nav, index) => (
                   <li
+                    onClick={() => setShowMenu((prev) => !prev)}
                     key={nav.id}
                     className={`cursor-pointer font-poppins text-[16px] font-normal text-white ${
                       index === navLinks.length - 1 ? "mb-0" : "mb-4"

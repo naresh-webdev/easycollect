@@ -21,11 +21,11 @@ export const navLinks = [
     title: "Profile",
   },
   {
-    id: "createsession",
+    id: "/createsession",
     title: "Create Session",
   },
   {
-    id: "joinsession",
+    id: "/joinsession",
     title: "Join Session",
   },
 ];
