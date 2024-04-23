@@ -8,6 +8,7 @@ import StyledTable from "../../components/StyledTable";
 import { queryClient } from "../../main";
 
 import { logoIcon } from "../../assets";
+import { FaShare } from "react-icons/fa";
 
 function Session() {
   const { id } = useParams();
@@ -21,11 +22,25 @@ function Session() {
     new Date().getTime() + sessionDetails?.validity * 24 * 60 * 60 * 1000,
   );
 
+  const shareData = {
+    title: "Copy Session ID 📝",
+    text: `Join our session on EasyCollect and contribute towards our goal!\nHere's the session ID: ${id}`,
+    url: `https://easycollect.onrender.com/api/session/joinSessionUsingId/${id}`,
+  };
+
   const membersData = sessionDetails?.membersList;
   const currentMember = membersData?.find(
     (member) => member.userId === currentUser.userInfo._id,
   );
-  console.log(membersData, "membersData");
+
+  const handleShare = async (e) => {
+    e.preventDefault();
+    try {
+      await navigator.share(shareData);
+    } catch (err) {
+      e.target.textContent = `Error: ${err}`;
+    }
+  };
 
   const handlePayment = async (e) => {
     try {
@@ -126,7 +141,7 @@ function Session() {
             {sessionValidDate.toLocaleDateString()}
           </span>
         </p>
-        <div className="mt-6 flex  items-center justify-center">
+        <div className="mt-6 flex flex-col  items-center justify-center">
           {currentMember?.paymentStatus === "unpaid" ? (
             <Button onClick={handlePayment}>
               Pay{" "}
@@ -139,6 +154,14 @@ function Session() {
               Payment Status: SUCCESS
             </div>
           )}
+
+          <button
+            className="mt-8 flex cursor-pointer items-center  justify-center rounded-md bg-slate-500 px-4 py-2 text-white ease-in-out hover:bg-slate-600"
+            onClick={handleShare}
+          >
+            <FaShare className="mr-2" />
+            Share
+          </button>
         </div>
         <div className="mt-8">
           <StyledTable membersData={membersData} />

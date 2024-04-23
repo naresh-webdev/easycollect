@@ -115,6 +115,56 @@ export const joinSession = async (req, res, next) => {
   }
 };
 
+export const joinSessionUsingId = async (req, res, next) => {
+  const { id: sessionId } = req.params;
+  const userId = req.user.userId;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      res.redirect("/");
+    }
+    const session = await Session.findById(sessionId);
+    if (!session) {
+      return next(errorHandler("Session not found", 404));
+    }
+
+    if (session.adminId.toString() === userId) {
+      // return res.status(200).json({
+      //   success: true,
+      //   message: "You are already the admin of this session ✔",
+      // });
+      return res.redirect("/");
+    }
+
+    if (
+      session.membersList.some((member) => member.userId.toString() === userId)
+    ) {
+      // return res.status(200).json({
+      //   success: true,
+      //   message: "You are already a member of this session ✔",
+      // });
+      return res.redirect("/");
+    }
+
+    session.membersList.push({
+      userId: userId,
+      userName: user.username,
+    });
+    user.sessions.push(sessionId);
+
+    const updatedSession = await session.save();
+    const updatedUser = await user.save();
+    if (!updatedSession || !updatedUser) {
+      return next(errorHandler("Joining Session Failed", 500));
+    }
+    // res.status(200).json({ success: true, message: "Session Joined ✔" });
+    return res.redirect("/");
+  } catch (error) {
+    return next(errorHandler(`Joining Session Failed ${error.message}`, 500));
+  }
+};
+
 export const updateUserPaymentInfo = async (req, res, next) => {
   const { id: sessionId } = req.params;
   const userId = req.user.userId;
