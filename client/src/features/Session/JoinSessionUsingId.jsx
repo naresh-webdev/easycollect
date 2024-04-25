@@ -37,7 +37,7 @@ function JoinSessionUsingId() {
         setSuccess(true);
         setTimeout(() => {
           navigate(`/session/${sessionId}`);
-        }, 4500);
+        }, 2500);
       } catch (error) {
         console.error(error);
         setErrorMessage("Something Went Wrong");

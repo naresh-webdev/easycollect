@@ -21,7 +21,7 @@ const Navbar = () => {
     <nav
       className={`navbar flex w-full items-center justify-between py-6 ${isAuthenticated ? "mt-2 sm:mt-4" : ""}`}
     >
-      <Link to="/">
+      <Link to={`${isAuthenticated ? "/dashboard" : "/"}`}>
         <div className="flex items-center justify-center gap-2">
           <img src={logoIcon} alt="easyCollect Logo" className="h-[38px]" />
           <span className="font-poppins text-[28px] font-semibold text-white">

@@ -11,8 +11,13 @@ import { logoIcon } from "../../assets";
 import { FaShare, FaTrash } from "react-icons/fa";
 import { notifyFailure, notifySuccess } from "../../utils/notifications";
 import { ToastContainer } from "react-toastify";
+import SessionNotFound from "./SessionNotFound";
+import Spinner from "../../components/Spinner";
+import { useState } from "react";
 
 function Session() {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const { id } = useParams();
   const { currentUser } = useSelector((state) => state.user);
   const { data } = useQuery({
@@ -20,10 +25,17 @@ function Session() {
     queryFn: () => getSessionHandler(currentUser.userInfo._id),
   });
   const sessionDetails = data?.sessions?.find((session) => session._id === id);
+
+  if (data != null && sessionDetails == null) {
+    setTimeout(() => {
+      navigate("/dashboard");
+    }, 2500);
+    return <SessionNotFound />;
+  }
+
   const sessionValidDate = new Date(
     new Date().getTime() + sessionDetails?.validity * 24 * 60 * 60 * 1000,
   );
-  const navigate = useNavigate();
 
   // Share session data
   //* Sample testing data
@@ -57,9 +69,6 @@ function Session() {
       queryClient.invalidateQueries(["sessions"]);
       if (data.success) {
         notifySuccess("Session Deleted Successfully");
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 3500);
       } else {
         notifyFailure("ERROR: " + data.message);
         console.log("error deleting session ", data.message);
@@ -96,6 +105,7 @@ function Session() {
           const body = {
             ...response,
           };
+          setLoading(true);
           const validateRes = await fetch("/api/payment/order/vaidate", {
             method: "POST",
             headers: {
@@ -120,6 +130,7 @@ function Session() {
               },
             );
             const data = await res.json();
+            setLoading(false);
             queryClient.invalidateQueries(["sessions"]);
           }
         },
@@ -170,6 +181,7 @@ function Session() {
         limit={1}
         className={`${styles.boxWidth} ${styles.flexCenter} mt-2 rounded-sm`}
       />
+      <Spinner isOpen={loading} color={"#00f6ff"} />
       <div className={`${styles.boxWidth} ${styles.flexCenter} flex-col`}>
         <h2 className={`${styles.heading2} my-1 text-center`}>
           {sessionDetails?.sessionName}
