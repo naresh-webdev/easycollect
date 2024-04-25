@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { getSessionHandler } from "../../utils/servies";
@@ -8,7 +8,9 @@ import StyledTable from "../../components/StyledTable";
 import { queryClient } from "../../main";
 
 import { logoIcon } from "../../assets";
-import { FaShare } from "react-icons/fa";
+import { FaShare, FaTrash } from "react-icons/fa";
+import { notifyFailure, notifySuccess } from "../../utils/notifications";
+import { ToastContainer } from "react-toastify";
 
 function Session() {
   const { id } = useParams();
@@ -21,11 +23,14 @@ function Session() {
   const sessionValidDate = new Date(
     new Date().getTime() + sessionDetails?.validity * 24 * 60 * 60 * 1000,
   );
+  const navigate = useNavigate();
 
+  // Share session data
+  //* Sample testing data
   const shareData = {
     title: "Copy Session ID 📝",
     text: `Join our session on EasyCollect and contribute towards our goal!\nHere's the session ID: ${id}`,
-    url: `https://easycollect.onrender.com/api/session/joinSessionUsingId/${id}`,
+    url: `http://localhost:5173/session/joinSessionUsingId/${id}`,
   };
 
   const membersData = sessionDetails?.membersList;
@@ -39,6 +44,28 @@ function Session() {
       await navigator.share(shareData);
     } catch (err) {
       e.target.textContent = `Error: ${err}`;
+    }
+  };
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(`/api/session/deleteSession/${id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      queryClient.invalidateQueries(["sessions"]);
+      if (data.success) {
+        notifySuccess("Session Deleted Successfully");
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 3500);
+      } else {
+        notifyFailure("ERROR: " + data.message);
+        console.log("error deleting session ", data.message);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -129,6 +156,20 @@ function Session() {
     <section
       className={`${layout.section} ${styles.flexCenter} ${styles.paddingY}  mx-4  overflow-hidden`}
     >
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        limit={1}
+        className={`${styles.boxWidth} ${styles.flexCenter} mt-2 rounded-sm`}
+      />
       <div className={`${styles.boxWidth} ${styles.flexCenter} flex-col`}>
         <h2 className={`${styles.heading2} my-1 text-center`}>
           {sessionDetails?.sessionName}
@@ -155,16 +196,28 @@ function Session() {
             </div>
           )}
 
-          <button
-            className="mt-8 flex cursor-pointer items-center  justify-center rounded-md bg-slate-500 px-4 py-2 text-white ease-in-out hover:bg-slate-600"
-            onClick={handleShare}
-          >
-            <FaShare className="mr-2" />
-            Share
-          </button>
+          <div className="flex gap-3">
+            <button
+              className="mt-8 flex cursor-pointer items-center  justify-center rounded-md bg-slate-500 px-4 py-2 text-white ease-in-out hover:bg-slate-600"
+              onClick={handleShare}
+            >
+              <FaShare className="mr-2" />
+              Share
+            </button>
+            <button
+              className="mt-8 flex cursor-pointer items-center  justify-center rounded-md bg-red-500 px-4 py-2 text-white ease-in-out hover:bg-red-600"
+              onClick={handleDelete}
+            >
+              <FaTrash className="mr-2" />
+              Delete
+            </button>
+          </div>
         </div>
         <div className="mt-8">
-          <StyledTable membersData={membersData} />
+          <StyledTable
+            membersData={membersData}
+            adminId={sessionDetails?.adminId}
+          />
         </div>
       </div>
     </section>

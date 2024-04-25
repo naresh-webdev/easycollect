@@ -8,6 +8,7 @@ import Profile from "./features/Dashboard/Profile";
 import CreateSession from "./features/Session/CreateSession";
 import Session from "./features/Session/Session";
 import JoinSession from "./features/Session/JoinSession";
+import JoinSessionUsingId from "./features/Session/JoinSessionUsingId";
 import Payment from "./components/Payment";
 
 const App = () => {
@@ -50,6 +51,10 @@ const App = () => {
         {
           path: "/payment",
           element: <Payment />,
+        },
+        {
+          path: "/session/joinSessionUsingId/:id",
+          element: <JoinSessionUsingId />,
         },
       ],
     },

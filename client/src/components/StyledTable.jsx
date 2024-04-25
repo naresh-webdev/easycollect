@@ -36,10 +36,9 @@ const theme = createTheme({
   },
 });
 
-function StyledTable({ membersData }) {
+function StyledTable({ membersData, adminId }) {
   const { currentUser } = useSelector((state) => state.user);
   const { userInfo } = currentUser;
-  console.log(userInfo, "currentUser");
 
   return (
     <ThemeProvider theme={theme}>
@@ -94,7 +93,10 @@ function StyledTable({ membersData }) {
                 <TableCell component="th" scope="row">
                   {index + 1}
                 </TableCell>
-                <TableCell align="left">{member.userName}</TableCell>
+                <TableCell align="left">
+                  {member.userName}{" "}
+                  {member.userId === adminId ? "(Admin🤴)" : ""}
+                </TableCell>
                 <TableCell
                   align="left"
                   sx={{
