@@ -25,6 +25,10 @@ const userScheme = new mongoose.Schema(
       ref: "Session",
       default: [],
     },
+    phoneNumber: {
+      type: Number,
+      default: null,
+    },
   },
   { timestamps: true }
 );

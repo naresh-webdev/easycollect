@@ -26,10 +26,18 @@ const userSlice = createSlice({
     userLogout: (state) => {
       state.currentUser = null;
     },
+    setPhoneNumber: (state, action) => {
+      state.currentUser.userInfo.phoneNumber = action.payload;
+    },
   },
 });
 
-export const { signInStart, signInSuccess, signInFailure, userLogout } =
-  userSlice.actions;
+export const {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+  userLogout,
+  setPhoneNumber,
+} = userSlice.actions;
 
 export default userSlice.reducer;

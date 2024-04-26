@@ -37,7 +37,7 @@ function OAuth() {
         setTimeout(() => {
           dispatch(signInSuccess(data));
           navigate("/dashboard");
-        }, 3500);
+        }, 5000);
       }
     } catch (error) {
       notifyFailure("Signup failed 😔");

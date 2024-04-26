@@ -40,7 +40,7 @@ function Profile() {
           >
             Basic Details{" "}
             <span className="cursor-pointer">
-              <FaEdit className="h-[28px] w-[28px]" />
+              {/* <FaEdit className="h-[28px] w-[28px]" /> */}
             </span>
           </h2>
           <div className="mr-4 mt-2 flex justify-between">

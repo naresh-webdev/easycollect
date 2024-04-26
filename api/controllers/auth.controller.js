@@ -109,7 +109,7 @@ export const googleLogin = async (req, res, next) => {
       console.log("newUser", newUser);
       await newUser.save();
       const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
-        expiresIn: "14",
+        expiresIn: "14d",
       });
       const { password: pass, ...userInfo } = newUser._doc;
       res

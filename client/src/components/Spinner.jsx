@@ -2,7 +2,7 @@ import * as React from "react";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
-export default function Spinner({ isOpen, color }) {
+export default function Spinner({ isOpen, color = "#00f6ff" }) {
   return (
     <div>
       <Backdrop

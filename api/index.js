@@ -19,6 +19,7 @@ mongoose
 import authRouter from "./routes/auth.route.js";
 import sessionRouter from "./routes/session.route.js";
 import paymentRoute from "./routes/payment.route.js";
+import userRoute from "./routes/user.route.js";
 
 const __dirname = path.resolve();
 
@@ -32,6 +33,7 @@ app.use(cors());
 app.use("/api/auth", authRouter);
 app.use("/api/session", sessionRouter);
 app.use("/api/payment", paymentRoute);
+app.use("/api/user", userRoute);
 
 app.use(express.static(path.join(__dirname, "/client/dist")));
 app.get("*", (req, res) => {

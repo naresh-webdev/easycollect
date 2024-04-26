@@ -37,12 +37,21 @@ const Navbar = () => {
               key={nav.id}
               className={`z-[100] cursor-pointer font-poppins text-[16px] font-normal text-white ${"mr-4 md:mr-6"} ${nav.title === "Profile" ? "hidden" : ""}`}
             >
-              <NavLink
-                to={`${nav.id}`}
-                className={`cursor-pointer transition-all ease-in hover:text-secondary ${nav.id === pathname ? "text-secondary" : ""}`}
-              >
-                {nav.title}
-              </NavLink>
+              {currentUser.userInfo.phoneNumber !== null ? (
+                <NavLink
+                  to={`${nav.id}`}
+                  className={`cursor-pointer transition-all ease-in hover:text-secondary ${nav.id === pathname ? "text-secondary" : ""}`}
+                >
+                  {nav.title}
+                </NavLink>
+              ) : (
+                <span
+                  className="cursor-not-allowed text-gray-400 transition-all ease-in"
+                  title="Phone number required"
+                >
+                  {nav.title}
+                </span>
+              )}
             </li>
           ))}
 
