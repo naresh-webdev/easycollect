@@ -8,6 +8,7 @@ import Button from "../../components/Button";
 import FormDialog from "../../components/FormDialog";
 import Spinner from "../../components/Spinner";
 import { ToastContainer } from "react-toastify";
+import { current } from "@reduxjs/toolkit";
 
 function Box({ title, urlId }) {
   return (
@@ -41,13 +42,14 @@ function DashboardPage() {
     }
   }, [isNotAuthenticated, navigate]);
 
-  const handleCreateSession = () => {
-    if (currentUser.userInfo.phoneNumber === null) {
-      console.log("get phone number");
+  useEffect(() => {
+    if (currentUser?.userInfo?.phoneNumber === null) {
       setIsFormOpen(true);
-    } else {
-      navigate("/createsession");
     }
+  }, [currentUser?.userInfo?.phoneNumber]);
+
+  const handleCreateSession = () => {
+    navigate("/createsession");
   };
 
   return (

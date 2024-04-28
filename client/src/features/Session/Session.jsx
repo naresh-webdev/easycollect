@@ -25,7 +25,6 @@ function Session() {
   const { data, isLoading, isFetching } = useQuery({
     queryKey: ["sessions"],
     queryFn: () => getSessionHandler(currentUser.userInfo._id),
-    refetchInterval: 10000,
   });
   const sessionDetails = data?.sessions?.find((session) => session._id === id);
 
