@@ -43,6 +43,9 @@ function JoinSessionUsingId() {
         setErrorMessage("Something Went Wrong");
         notifyFailure("Something Went Wrong 😟");
         setError(true);
+        setTimeout(() => {
+          navigate("/signup");
+        }, 3500);
       } finally {
         setLoading(false);
       }
@@ -80,7 +83,8 @@ function JoinSessionUsingId() {
           {success
             ? "Redirecting to the session page..."
             : error
-              ? errorMessage
+              ? errorMessage +
+                ", you will be redirected shortly to signup page."
               : "Please wait while we join you to the session"}
         </p>
 

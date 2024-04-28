@@ -16,7 +16,9 @@ import {
 import OAuth from "../../components/OAuth";
 
 function SignupPage() {
-  const [formData, setFormData] = useState({});
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { loading, currentUser } = useSelector((state) => state.user);
 
   const navigate = useNavigate();
@@ -30,13 +32,8 @@ function SignupPage() {
     }
   }, [isAuthenticated, navigate]);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
-  };
-
   async function handleSubmit(e) {
     e.preventDefault();
-    const { username, email, password } = formData;
     if (!username || !email || !password) {
       dispatch(signupFailure("Please fill out all fields"));
       notifyFailure("Please fill out all fields");
@@ -48,7 +45,11 @@ function SignupPage() {
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+        }),
       });
       const data = await res.json();
       if (data.success === false) {
@@ -69,7 +70,9 @@ function SignupPage() {
       notifyFailure("Signup failed 😔");
       return;
     } finally {
-      setFormData({});
+      setUsername(() => "");
+      setEmail(() => "");
+      setPassword(() => "");
     }
   }
 
@@ -126,7 +129,8 @@ function SignupPage() {
                   type="text"
                   name="username"
                   id="username"
-                  onChange={handleChange}
+                  value={username}
+                  onChange={(e) => setUsername(() => e.target.value)}
                   placeholder="Enter your username"
                   required
                 />
@@ -143,7 +147,8 @@ function SignupPage() {
                   type="email"
                   name="email"
                   id="email"
-                  onChange={handleChange}
+                  value={email}
+                  onChange={(e) => setEmail(() => e.target.value)}
                   placeholder="Enter your email"
                   required
                 />
@@ -160,7 +165,8 @@ function SignupPage() {
                   type="password"
                   name="password"
                   id="password"
-                  onChange={handleChange}
+                  value={password}
+                  onChange={(e) => setPassword(() => e.target.value)}
                   placeholder="Enter your password"
                   required
                 />

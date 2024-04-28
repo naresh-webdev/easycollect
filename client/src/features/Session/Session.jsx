@@ -14,23 +14,35 @@ import { ToastContainer } from "react-toastify";
 import SessionNotFound from "./SessionNotFound";
 import Spinner from "../../components/Spinner";
 import { useState } from "react";
+import SessionDeleted from "./SessionDeleted";
 
 function Session() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [deleted, setDeleted] = useState(false);
   const { id } = useParams();
   const { currentUser } = useSelector((state) => state.user);
-  const { data } = useQuery({
+  const { data, isLoading, isFetching } = useQuery({
     queryKey: ["sessions"],
     queryFn: () => getSessionHandler(currentUser.userInfo._id),
   });
   const sessionDetails = data?.sessions?.find((session) => session._id === id);
 
-  if (data != null && sessionDetails == null) {
+  if (
+    data != null &&
+    sessionDetails == null &&
+    !isLoading &&
+    !isFetching &&
+    !deleted
+  ) {
     setTimeout(() => {
       navigate("/dashboard");
     }, 2500);
     return <SessionNotFound />;
+  }
+
+  if (deleted) {
+    return <SessionDeleted />;
   }
 
   const sessionValidDate = new Date(
@@ -55,11 +67,13 @@ function Session() {
     try {
       await navigator.share(shareData);
     } catch (err) {
-      e.target.textContent = `Error: ${err}`;
+      console.log("error in sharing link : ", err);
     }
   };
 
   const handleDelete = async (e) => {
+    //* Delete session
+    //todo: Add confirmation dialog, add payout feature
     e.preventDefault();
     try {
       const res = await fetch(`/api/session/deleteSession/${id}`, {
@@ -68,7 +82,7 @@ function Session() {
       const data = await res.json();
       queryClient.invalidateQueries(["sessions"]);
       if (data.success) {
-        notifySuccess("Session Deleted Successfully");
+        setDeleted(true);
       } else {
         notifyFailure("ERROR: " + data.message);
         console.log("error deleting session ", data.message);
@@ -181,7 +195,7 @@ function Session() {
         limit={1}
         className={`${styles.boxWidth} ${styles.flexCenter} mt-2 rounded-sm`}
       />
-      <Spinner isOpen={loading} color={"#00f6ff"} />
+      <Spinner isOpen={loading || isLoading || isFetching} color={"#00f6ff"} />
       <div className={`${styles.boxWidth} ${styles.flexCenter} flex-col`}>
         <h2 className={`${styles.heading2} my-1 text-center`}>
           {sessionDetails?.sessionName}

@@ -5,6 +5,7 @@ import { Form } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { notifySuccess, notifyFailure } from "../../utils/notifications";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../../components/Spinner";
 
 function CreateSession() {
   const [formData, setFormData] = useState({
@@ -86,6 +87,7 @@ function CreateSession() {
         limit={1}
         className={`${styles.boxWidth} ${styles.flexCenter} mt-2 rounded-sm`}
       />
+      <Spinner isOpen={loading} />
 
       <div
         className={`${styles.boxWidth} ${styles.flexCenter} overflow-hidden`}
