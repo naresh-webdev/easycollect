@@ -50,6 +50,12 @@ function Profile() {
             </p>
           </div>
           <div className="mr-4 mt-4 flex justify-between">
+            <p className="font-poppins text-lg text-white">Display Name : </p>
+            <p className="font-poppins text-lg text-dimWhite">
+              {userInfo.displayName}
+            </p>
+          </div>
+          <div className="mr-4 mt-4 flex justify-between">
             <p className="font-poppins text-lg text-white">Email : </p>
             <p className="font-poppins text-lg text-dimWhite">
               {userInfo.email}

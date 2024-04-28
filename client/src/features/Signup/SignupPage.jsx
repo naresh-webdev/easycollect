@@ -17,6 +17,7 @@ import OAuth from "../../components/OAuth";
 
 function SignupPage() {
   const [username, setUsername] = useState("");
+  const [displayname, setDisplayname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { loading, currentUser } = useSelector((state) => state.user);
@@ -34,7 +35,7 @@ function SignupPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!username || !email || !password) {
+    if (!username || !email || !password || !displayname) {
       dispatch(signupFailure("Please fill out all fields"));
       notifyFailure("Please fill out all fields");
       return;
@@ -47,6 +48,7 @@ function SignupPage() {
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({
           username,
+          displayname,
           email,
           password,
         }),
@@ -73,6 +75,7 @@ function SignupPage() {
       setUsername(() => "");
       setEmail(() => "");
       setPassword(() => "");
+      setDisplayname(() => "");
     }
   }
 
@@ -135,6 +138,26 @@ function SignupPage() {
                   required
                 />
               </div>
+
+              <div className="mb-4 flex flex-col gap-1">
+                <label
+                  htmlFor="displayName"
+                  className="font-poppins font-medium text-primary"
+                >
+                  Displayname
+                </label>
+                <input
+                  className="rounded-md border-[2px] border-[#D8DADC] p-2 focus:border-primary focus:outline-none "
+                  type="text"
+                  name="displayname"
+                  id="displayname"
+                  value={displayname}
+                  onChange={(e) => setDisplayname(() => e.target.value)}
+                  placeholder="Enter your Displayname"
+                  required
+                />
+              </div>
+
               <div className="mb-4 flex flex-col gap-1">
                 <label
                   htmlFor="email"

@@ -29,6 +29,7 @@ export const createSession = async (req, res, next) => {
       {
         userId: req.user.userId,
         userName: admin.username,
+        displayName: admin.displayName,
       },
     ],
   });
@@ -101,6 +102,7 @@ export const joinSession = async (req, res, next) => {
     session.membersList.push({
       userId: userId,
       userName: user.username,
+      displayName: user.displayName,
     });
     user.sessions.push(sessionId);
 
@@ -171,6 +173,7 @@ export const deleteSession = async (req, res, next) => {
     if (!updated) {
       return next(errorHandler("Deleting Session Failed", 500));
     }
+
     res.status(200).json({ success: true, message: "Session Deleted ✔" });
   } catch (error) {
     return next(errorHandler(`Deleting Session Failed ${error.message}`, 500));

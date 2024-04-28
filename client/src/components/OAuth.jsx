@@ -27,6 +27,7 @@ function OAuth() {
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({
           name: resultsFromGoogle.user.displayName,
+          displayname: resultsFromGoogle.user.displayName,
           email: resultsFromGoogle.user.email,
           photoURL: resultsFromGoogle.user.photoURL,
         }),

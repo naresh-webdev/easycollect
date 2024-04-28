@@ -10,6 +10,10 @@ const memberSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  displayName: {
+    type: String,
+    required: true,
+  },
   paymentType: {
     type: String,
     default: null,

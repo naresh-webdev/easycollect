@@ -94,7 +94,7 @@ function StyledTable({ membersData, adminId }) {
                   {index + 1}
                 </TableCell>
                 <TableCell align="left">
-                  {member.userName}{" "}
+                  {member.displayName}{" "}
                   {member.userId === adminId ? "(Admin🤴)" : ""}
                 </TableCell>
                 <TableCell

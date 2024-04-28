@@ -2,15 +2,18 @@ import bcryptjs from "bcryptjs";
 import User from "./../models/user.model.js";
 import { errorHandler } from "../utils/ErrorHandler.js";
 import jwt from "jsonwebtoken";
+import { generateUsername } from "unique-username-generator";
 
 export const signup = async (req, res, next) => {
-  const { username, email, password } = req.body;
+  const { username, displayname, email, password } = req.body;
 
   if (
     !username ||
+    !displayname ||
     !email ||
     !password ||
     username === "" ||
+    displayname === "" ||
     email === "" ||
     password === ""
   ) {
@@ -21,6 +24,7 @@ export const signup = async (req, res, next) => {
 
   const newUser = new User({
     username,
+    displayName: displayname,
     email,
     password: hashedPassword,
   });
@@ -77,7 +81,7 @@ export const login = async (req, res, next) => {
 };
 
 export const googleLogin = async (req, res, next) => {
-  const { name, email, photoURL } = req.body;
+  const { name, displayname, email, photoURL } = req.body;
   try {
     const user = await User.findOne({ email });
     if (user) {
@@ -98,10 +102,10 @@ export const googleLogin = async (req, res, next) => {
         Math.random().toString(36).slice(-8);
 
       const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
+      const username = generateUsername("", 4, 14, name);
       const newUser = new User({
-        username:
-          name.toLowerCase().split(" ").join("") +
-          Math.random().toString(9).slice(-4),
+        username,
+        displayName: displayname,
         email,
         password: hashedPassword,
         photoURL: photoURL,
