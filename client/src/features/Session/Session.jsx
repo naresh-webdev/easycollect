@@ -54,7 +54,7 @@ function Session() {
   const shareData = {
     title: "Copy Session ID 📝",
     text: `Join our session on EasyCollect and contribute towards our goal!\nHere's the session ID: ${id}`,
-    url: `http://localhost:5173/session/joinSessionUsingId/${id}`,
+    url: `https://easycollect.onrender.com/session/joinSessionUsingId/${id}`,
   };
 
   const membersData = sessionDetails?.membersList;
