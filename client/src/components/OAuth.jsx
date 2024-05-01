@@ -10,14 +10,18 @@ import { useNavigate } from "react-router-dom";
 import { notifySuccess, notifyFailure } from "../utils/notifications";
 
 import Button from "./Button";
+import { useState } from "react";
+import Spinner from "./Spinner";
 
 function OAuth() {
   const auth = getAuth(app);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   // Google OAuth - function
   const handleGoogleClick = async () => {
+    setLoading(true);
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: "select_account" });
     try {
@@ -45,12 +49,17 @@ function OAuth() {
       console.error(error.message);
       dispatch(signInFailure(error.message));
       dispatch(userLogout());
+    } finally {
+      setLoading(false);
     }
   };
   return (
-    <Button type="secondary" onClick={handleGoogleClick}>
-      Continue with Google
-    </Button>
+    <>
+      <Spinner isOpen={loading} />
+      <Button type="secondary" onClick={handleGoogleClick}>
+        Continue with Google
+      </Button>
+    </>
   );
 }
 

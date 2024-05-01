@@ -2,6 +2,7 @@ import { Form, Link, useNavigate } from "react-router-dom";
 import styles from "../../constants/styles";
 import { avatar1 } from "../../assets";
 import Button from "../../components/Button";
+import Spinner from "../../components/Spinner";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { notifySuccess, notifyFailure } from "../../utils/notifications";
@@ -55,8 +56,13 @@ function SignupPage() {
       });
       const data = await res.json();
       if (data.success === false) {
-        dispatch(signupFailure(data.message));
+        if (data.message.includes("duplicate key error")) {
+          notifyFailure("Username or email already exists 😔");
+          dispatch(signupFailure(data.message));
+          return;
+        }
         notifyFailure("Signup failed 😔");
+        dispatch(signupFailure(data.message));
         return;
       }
       if (res.ok) {
@@ -68,6 +74,7 @@ function SignupPage() {
         }, 2500);
       }
     } catch (error) {
+      console.log(error, "error from signup page from line 83");
       dispatch(signupFailure(error.message));
       notifyFailure("Signup failed 😔");
       return;
@@ -81,6 +88,7 @@ function SignupPage() {
 
   return (
     <section className={`${styles.flexCenter} w-full bg-primary xs:h-full`}>
+      <Spinner isOpen={loading} />
       <ToastContainer
         position="top-center"
         autoClose={5000}
@@ -133,7 +141,9 @@ function SignupPage() {
                   name="username"
                   id="username"
                   value={username}
-                  onChange={(e) => setUsername(() => e.target.value)}
+                  onChange={(e) =>
+                    setUsername(() => e.target.value.toLowerCase())
+                  }
                   placeholder="Enter your username"
                   required
                 />

@@ -15,6 +15,7 @@ import { avatar1 } from "../../assets";
 import { notifySuccess, notifyFailure } from "../../utils/notifications";
 import { ToastContainer } from "react-toastify";
 import OAuth from "../../components/OAuth";
+import Spinner from "../../components/Spinner";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -51,8 +52,14 @@ function LoginPage() {
 
       console.log(data, "data from login page");
       if (data.success === false) {
+        if (data.status === 400) {
+          notifyFailure("Invalid credentials 😔");
+        } else if (data.status === 404) {
+          notifyFailure("User not found 😔");
+        } else {
+          notifyFailure("Login failed 😔");
+        }
         dispatch(signInFailure(data.message));
-        notifyFailure("Login failed 😔");
         return;
       }
       if (res.ok) {
@@ -65,7 +72,7 @@ function LoginPage() {
     } catch (error) {
       dispatch(signInFailure(error.message));
       notifyFailure("Login failed 😔");
-      console.log(error, "error from login page");
+      console.log(error, "error from login page line 69");
     } finally {
       setEmail("");
       setPassword("");
@@ -74,6 +81,7 @@ function LoginPage() {
 
   return (
     <section className={`${styles.flexCenter} h-full w-full  bg-primary`}>
+      <Spinner isOpen={loading} />
       <ToastContainer
         position="top-center"
         autoClose={5000}

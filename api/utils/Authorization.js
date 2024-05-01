@@ -1,17 +1,51 @@
 import jwt from "jsonwebtoken";
 
 export const authenticateToken = (req, res, next) => {
-  const token = req.cookies.access_token;
-  if (!token) {
+  const accessToken = req.cookies.access_token;
+  const refreshToken = req.cookies.refresh_token;
+
+  if (!accessToken && !refreshToken) {
     return res.redirect("/signup");
   }
-  console.log("token: from authroizaiton", token);
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) {
-      // console.log("err from authorization", err);
-      return res.status(403).json({ message: "Forbidden" });
+
+  // Verify access token
+  jwt.verify(accessToken, process.env.JWT_SECRET, (accessTokenErr, user) => {
+    if (!accessTokenErr) {
+      // Access token is valid, proceed with the request
+      req.user = user;
+      return next();
     }
-    req.user = user;
-    next();
+
+    // Access token verification failed
+    if (accessTokenErr.name !== "TokenExpiredError") {
+      // Access token is invalid
+      return res.status(403).json({ message: "Invalid access token" });
+    }
+
+    // Access token has expired, try refreshing
+    jwt.verify(
+      refreshToken,
+      process.env.JWT_SECRET,
+      (refreshTokenErr, decoded) => {
+        if (refreshTokenErr) {
+          // Refresh token is invalid or expired, redirect to signup
+          return res.redirect("/signup");
+        }
+
+        // Generate new access token
+        const newAccessToken = jwt.sign(
+          { userId: decoded.userId },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: "1h", // Adjust the expiry as needed
+          }
+        );
+
+        // Set the new access token in response cookies
+        res.cookie("access_token", newAccessToken, { httpOnly: true });
+        req.user = decoded;
+        next();
+      }
+    );
   });
 };
