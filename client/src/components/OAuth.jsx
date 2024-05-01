@@ -55,10 +55,10 @@ function OAuth() {
   };
   return (
     <>
-      <Spinner isOpen={loading} />
-      <Button type="secondary" onClick={handleGoogleClick}>
+      <Button type="secondary" onClick={handleGoogleClick} styles={`mt-2`}>
         Continue with Google
       </Button>
+      {loading && <Spinner isOpen={loading} />}
     </>
   );
 }

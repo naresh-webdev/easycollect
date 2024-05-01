@@ -121,7 +121,7 @@ function LoginPage() {
             </p>
           </div>
 
-          <div className="mx-8 flex flex-col gap-3">
+          <div className="mx-8 flex flex-col ">
             <Form className="mb-1 mt-8" onSubmit={handleSubmit}>
               <div className="mb-4 flex flex-col gap-1">
                 <label
