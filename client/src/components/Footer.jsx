@@ -1,6 +1,7 @@
 import styles from "../constants/styles";
 import { logoIcon } from "../assets";
 import { footerLinks, socialMedia } from "../constants";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -41,9 +42,9 @@ const Footer = () => {
                       index !== footerLink.links.length - 1 ? "mb-4 " : "mb-0"
                     }`}
                   >
-                    <a href={link.link} className="">
+                    <Link to={link.link} className="">
                       {link.name}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -58,14 +59,16 @@ const Footer = () => {
         </p>
         <div className="mt-6 flex flex-row md:mt-0">
           {socialMedia.map((social, index) => (
-            <img
-              key={index}
-              src={social.icon}
-              alt={social.id}
-              className={`h-[21px] w-[21px] cursor-pointer object-contain ${
-                index !== socialMedia.length - 1 ? "mr-6 " : "mr-0"
-              }`}
-            />
+            <a href={social.link} target="_blank" rel="noreferrer">
+              <img
+                key={index}
+                src={social.icon}
+                alt={social.id}
+                className={`h-[21px] w-[21px] cursor-pointer object-contain ${
+                  index !== socialMedia.length - 1 ? "mr-6 " : "mr-0"
+                }`}
+              />
+            </a>
           ))}
         </div>
       </div>

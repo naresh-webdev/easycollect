@@ -10,6 +10,9 @@ import Session from "./features/Session/Session";
 import JoinSession from "./features/Session/JoinSession";
 import JoinSessionUsingId from "./features/Session/JoinSessionUsingId";
 import Payment from "./components/Payment";
+import HelpCenter from "./features/landingPage/HelpCenter";
+import TermsAndConditions from "./features/landingPage/TermsAndConditions";
+import PrivacyPolicy from "./features/landingPage/PrivacyPolicy";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -19,6 +22,18 @@ const App = () => {
         {
           path: "/",
           element: <LandingPage />,
+        },
+        {
+          path: "/help",
+          element: <HelpCenter />,
+        },
+        {
+          path: "/termsandconditions",
+          element: <TermsAndConditions />,
+        },
+        {
+          path: "/privacypolicy",
+          element: <PrivacyPolicy />,
         },
         {
           path: "/signup",

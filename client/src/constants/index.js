@@ -85,17 +85,17 @@ export const stats = [
   {
     id: "stats-1",
     title: "User Active",
-    value: "3800+",
+    value: "1380+",
   },
   {
     id: "stats-2",
     title: "Trusted by Company",
-    value: "230+",
+    value: "150+",
   },
   {
     id: "stats-3",
     title: "Transaction",
-    value: "$230M+",
+    value: "450",
   },
 ];
 
@@ -116,12 +116,12 @@ export const footerLinks = [
         link: "#",
       },
       {
-        name: "Explore",
-        link: "#",
+        name: "Privacy Policy",
+        link: "/privacypolicy",
       },
       {
         name: "Terms & Services",
-        link: "#",
+        link: "/termsandconditions",
       },
     ],
   },
@@ -129,8 +129,8 @@ export const footerLinks = [
     title: "Community",
     links: [
       {
-        name: "Help Center",
-        link: "#",
+        name: "Contact Us",
+        link: "/help",
       },
       {
         name: "Partners",
@@ -169,22 +169,22 @@ export const socialMedia = [
   {
     id: "social-media-1",
     icon: instagram,
-    link: "https://www.instagram.com/",
+    link: "https://www.instagram.com/naresh__dev/",
   },
   {
     id: "social-media-2",
     icon: facebook,
-    link: "https://www.facebook.com/",
+    link: "https://github.com/naresh-webdev",
   },
   {
     id: "social-media-3",
     icon: twitter,
-    link: "https://www.twitter.com/",
+    link: "https://twitter.com/naresh_mdev",
   },
   {
     id: "social-media-4",
     icon: linkedin,
-    link: "https://www.linkedin.com/",
+    link: "https://www.linkedin.com/in/nareshdeveloper/",
   },
 ];
 

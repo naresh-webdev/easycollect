@@ -108,7 +108,7 @@ function Session() {
       console.log(order, "data from payment");
 
       var options = {
-        key: import.meta.env.RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
         amount: sessionDetails?.fundAmount,
         currency: "INR",
         name: "EasyCollect",
