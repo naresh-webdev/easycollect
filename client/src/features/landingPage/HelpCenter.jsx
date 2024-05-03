@@ -69,6 +69,8 @@ function HelpCenter() {
             <p className="max-w-[250px] text-center font-poppins text-[14px] text-primary">
               📞+91 9360565211,
               <br /> 📧 naresh2004.m@gmail.com
+              <br /> 🏠 3A, Kalaignar Street, College Road, Tindivanam,
+              TamilNadu
             </p>
           </div>
 
