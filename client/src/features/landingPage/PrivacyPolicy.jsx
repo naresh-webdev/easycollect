@@ -2,9 +2,9 @@ import styles from "../../constants/styles";
 
 function PrivacyPolicy() {
   return (
-    <div className={`text-gray-300 ${styles.boxWidth} ${styles.paddingX}`}>
+    <div className="mx-auto max-w-3xl px-4 py-8 text-gray-300 sm:px-6 lg:px-8">
       <p className="mb-4 text-lg leading-7">
-        <strong className="font-bold">Privacy Policy</strong>
+        <h1 className="text-3xl font-bold">Privacy Policy</h1>
         <br />
         At EasyCollect, accessible from https://easycollect.onrender.com, one of
         our main priorities is the privacy of our visitors. This Privacy Policy

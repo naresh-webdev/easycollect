@@ -112,8 +112,8 @@ export const footerLinks = [
         link: "#",
       },
       {
-        name: "Create",
-        link: "#",
+        name: "Refunds & Cancellation",
+        link: "/refundsandcancellations",
       },
       {
         name: "Privacy Policy",

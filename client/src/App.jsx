@@ -13,6 +13,7 @@ import Payment from "./components/Payment";
 import HelpCenter from "./features/landingPage/HelpCenter";
 import TermsAndConditions from "./features/landingPage/TermsAndConditions";
 import PrivacyPolicy from "./features/landingPage/PrivacyPolicy";
+import RefundsCancellations from "./features/landingPage/RefundsCancellations";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -34,6 +35,10 @@ const App = () => {
         {
           path: "/privacypolicy",
           element: <PrivacyPolicy />,
+        },
+        {
+          path: "/refundsandcancellations",
+          element: <RefundsCancellations />,
         },
         {
           path: "/signup",
