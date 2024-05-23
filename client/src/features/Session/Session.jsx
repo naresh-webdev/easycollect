@@ -151,7 +151,7 @@ function Session() {
         prefill: {
           name: currentUser.userInfo.username,
           email: currentUser.userInfo.email,
-          contact: "9000090000",
+          contact: currentUser.userInfo.phoneNumber,
         },
         notes: {
           address: "Razorpay Corporate Office",

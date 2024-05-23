@@ -102,7 +102,7 @@ function StyledTable({ membersData, adminId }) {
                   sx={{
                     display: {
                       mobile: "none",
-                      tablet: "block",
+                      tablet: "table-cell",
                     },
                   }}
                 >
