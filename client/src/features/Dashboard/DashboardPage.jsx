@@ -8,7 +8,7 @@ import Button from "../../components/Button";
 import FormDialog from "../../components/FormDialog";
 import Spinner from "../../components/Spinner";
 import { ToastContainer } from "react-toastify";
-import { current } from "@reduxjs/toolkit";
+import { queryClient } from "../../main";
 
 function Box({ title, urlId }) {
   return (
@@ -33,6 +33,13 @@ function DashboardPage() {
     queryKey: ["sessions"],
     queryFn: getSessionHandler,
   });
+
+  useEffect(() => {
+    if (currentUser) {
+      // Refetch sessions when the component mounts
+      queryClient.invalidateQueries(["sessions"]);
+    }
+  }, [currentUser, queryClient]);
 
   const isNotAuthenticated = currentUser == null;
 
