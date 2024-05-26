@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styles, { layout } from "../../constants/styles";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getSessionHandler } from "../../utils/servies";
@@ -9,6 +9,8 @@ import FormDialog from "../../components/FormDialog";
 import Spinner from "../../components/Spinner";
 import { ToastContainer } from "react-toastify";
 import { queryClient } from "../../main";
+import { notifyFailure } from "../../utils/notifications";
+import { userLogout } from "../../redux/user/userSlice";
 
 function Box({ title, urlId }) {
   return (
@@ -24,6 +26,7 @@ function Box({ title, urlId }) {
 
 function DashboardPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -31,15 +34,49 @@ function DashboardPage() {
 
   const sessionQuery = useQuery({
     queryKey: ["sessions"],
-    queryFn: getSessionHandler,
+    queryFn: async () => {
+      try {
+        const res = await fetch(`/api/session/getSession`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await res.json();
+        if (data.success === false) {
+          dispatch(userLogout());
+          queryClient.clear();
+          navigate("/signup");
+        }
+        console.log("data : ", data);
+        return data;
+      } catch (error) {
+        console.log(error, "error from services getSessions");
+        return new Error(
+          "Unable to load the sesions!, proceeding to signup page.",
+        );
+      }
+    },
   });
+
+  // const { data, isLoading, isError, error } = useQuery({
+  //   queryKey: ["sessions"],
+  //   queryFn: getSessionHandler,
+  // });
+
+  const { isError, isLoading, error } = sessionQuery;
+
+  if (isError) {
+    console.log(error, "error from dashboard");
+    notifyFailure("Unexpected Error: ", error);
+  }
 
   useEffect(() => {
     if (currentUser) {
       // Refetch sessions when the component mounts
       queryClient.invalidateQueries(["sessions"]);
     }
-  }, [currentUser, queryClient]);
+  }, [currentUser]);
 
   const isNotAuthenticated = currentUser == null;
 
@@ -106,6 +143,7 @@ function DashboardPage() {
           ))}
         </div>
       )}
+      {loading && <Spinner isOpen={isLoading} />}
     </section>
   );
 }

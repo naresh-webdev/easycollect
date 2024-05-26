@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { errorHandler } from "./ErrorHandler.js";
 
 export const authenticateToken = (req, res, next) => {
   const accessToken = req.cookies.access_token;
@@ -19,7 +20,10 @@ export const authenticateToken = (req, res, next) => {
     // Access token verification failed
     if (accessTokenErr.name !== "TokenExpiredError") {
       // Access token is invalid
-      return res.status(403).json({ message: "Invalid access token" });
+      return res
+        .status(403)
+        .json({ success: false, message: "Invalid access token" });
+      // return res.redirect("/signup");
     }
 
     // Access token has expired, try refreshing

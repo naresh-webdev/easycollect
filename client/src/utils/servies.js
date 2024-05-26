@@ -1,5 +1,3 @@
-import { notifyFailure } from "./notifications";
-
 export async function getSessionHandler() {
   try {
     const res = await fetch(`/api/session/getSession`, {
@@ -9,11 +7,14 @@ export async function getSessionHandler() {
       },
     });
     const data = await res.json();
+    if (data.success === false) {
+      // window.location.href = "/signup";
+    }
     console.log("data : ", data);
     return data;
   } catch (error) {
-    notifyFailure("Unable to add Phone Number, try again!");
-    console.log(error);
+    console.log(error, "error from services getSessions");
+    return new Error("Unable to load the sesions!, proceeding to signup page.");
   }
 }
 
