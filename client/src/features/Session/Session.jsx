@@ -115,7 +115,6 @@ function Session() {
         description: sessionDetails?.description,
         image: logoIcon,
         order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-        payment_capture: "1",
         handler: async function (response) {
           const body = {
             ...response,
